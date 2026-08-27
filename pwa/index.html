@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Inkbound</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+    <meta name="description" content="A stick figure fighting game about hunting the hand that drew you." />
+    <meta name="theme-color" content="#E8DFC8" />
+
+    <!-- iOS: makes "Add to Home Screen" open without Safari's chrome -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Inkbound" />
+    <link rel="apple-touch-icon" href="./icon-192.png" />
+
+    <link rel="manifest" href="./manifest.webmanifest" />
+    <link rel="icon" href="./icon-192.png" />
+
+    <style>
+      html, body, #root { height: 100%; margin: 0; }
+      body {
+        background: #E8DFC8;
+        overscroll-behavior: none;          /* no pull-to-refresh mid-fight */
+        -webkit-tap-highlight-color: transparent;
+        -webkit-user-select: none; user-select: none;
+        -webkit-touch-callout: none;         /* no long-press menu on buttons */
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
