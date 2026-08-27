@@ -172,6 +172,70 @@ const BOSSES = {
 /* ---------------- SAVE / STORAGE ---------------- */
 const SAVE_KEY = 'inkbound-save-v1';
 const LB_KEY = 'inkbound-leaderboard-v1';
+const SECRET_KEY = 'inkbound-secret-v1';
+
+/* The API base URL, set by a <script> tag in index.html when this is deployed
+   as a real site. Left undefined (as it is inside a Claude artifact) the game
+   falls back to window.storage and the board is device-local. */
+const API = (typeof window !== 'undefined' && window.INKBOUND_API) || null;
+
+/* ---------------- identity ----------------
+   There is no login. On first launch the device generates a long random
+   secret and keeps it forever. The pair (name, secret) is the account: the
+   server hands a name to whoever claims it first, and only that secret can
+   post times under it afterwards. The player can read the secret out of
+   Settings as a recovery code to move their name to another device. */
+let SECRET = null;
+async function getSecret() {
+  if (SECRET) return SECRET;
+  try { const r = await window.storage.get(SECRET_KEY); if (r && r.value) { SECRET = r.value; return SECRET; } }
+  catch { /* first run */ }
+  const bytes = new Uint8Array(24);
+  (window.crypto || window.msCrypto).getRandomValues(bytes);
+  SECRET = Array.from(bytes).map(b => b.toString(16).padStart(2, '0')).join('');
+  try { await window.storage.set(SECRET_KEY, SECRET); } catch { /* offline */ }
+  return SECRET;
+}
+async function setSecret(v) {
+  SECRET = v;
+  try { await window.storage.set(SECRET_KEY, v); } catch { /* offline */ }
+}
+
+async function api(path, opts = {}) {
+  if (!API) return null;
+  const ctl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+  const timer = ctl ? setTimeout(() => ctl.abort(), 8000) : null;
+  try {
+    const r = await fetch(API.replace(/\/+$/, '') + path, {
+      ...opts,
+      signal: ctl ? ctl.signal : undefined,
+      headers: opts.body ? { 'Content-Type': 'application/json', ...(opts.headers || {}) } : opts.headers,
+    });
+    const body = await r.json().catch(() => null);
+    return { ok: r.ok, status: r.status, body };
+  } catch { return null; }
+  finally { if (timer) clearTimeout(timer); }
+}
+
+/* Ask the server for a name. Returns 'ok', 'taken', or 'offline'. */
+async function claimName(name) {
+  if (!API) return 'ok';
+  const secret = await getSecret();
+  const r = await api('/claim', { method: 'POST', body: JSON.stringify({ name, secret }) });
+  if (!r) return 'offline';
+  if (r.status === 409) return 'taken';
+  return r.ok ? 'ok' : 'offline';
+}
+
+/* Move an existing name onto this device using its recovery code. */
+async function restoreName(name, code) {
+  if (!API) return 'offline';
+  const r = await api('/verify', { method: 'POST', body: JSON.stringify({ name, secret: code }) });
+  if (!r) return 'offline';
+  if (!r.ok) return 'nomatch';
+  await setSecret(code);
+  return 'ok';
+}
 
 const freshSave = (name) => ({
   name, ink:0, totalInk:0, level:1, cleared:{}, best:{}, deaths:0, runs:0,
@@ -183,7 +247,7 @@ const freshSave = (name) => ({
 
 /* Bump VERSION on every deploy so testers can tell you which build they are on.
    It is shown at the bottom of Settings. */
-const VERSION = '1.1.0';
+const VERSION = '1.1.1';
 
 /* Old saves are merged onto a fresh one, so adding a new upgrade, wearable or
    save field in a later build never leaves an existing player with undefined
@@ -210,18 +274,67 @@ function migrateSave(raw) {
   return out;
 }
 
-async function loadSave() {
+async function loadLocalSave() {
   try { const r = await window.storage.get(SAVE_KEY); return r ? migrateSave(JSON.parse(r.value)) : null; }
   catch { return null; }
 }
-async function writeSave(s) {
-  try { await window.storage.set(SAVE_KEY, JSON.stringify(s)); } catch (e) { /* offline */ }
+
+/* Local save is the source of truth for speed. The cloud copy is a mirror
+   used to move a player between devices, so on boot we take whichever was
+   written more recently. */
+async function loadSave() {
+  const local = await loadLocalSave();
+  if (!API || !local || !local.name) return local;
+  const secret = await getSecret();
+  const r = await api(`/save?name=${encodeURIComponent(local.name)}&secret=${encodeURIComponent(secret)}`);
+  const cloud = r && r.ok ? migrateSave(r.body) : null;
+  if (!cloud) return local;
+  return (cloud.updated || 0) > (local.updated || 0) ? cloud : local;
 }
+
+/* Pull a save down for a name just restored from a recovery code. */
+async function pullSave(name) {
+  if (!API) return null;
+  const secret = await getSecret();
+  const r = await api(`/save?name=${encodeURIComponent(name)}&secret=${encodeURIComponent(secret)}`);
+  return r && r.ok ? migrateSave(r.body) : null;
+}
+
+/* KV has a daily write allowance on the free plan, so the cloud copy is
+   pushed at most once every 20 seconds. Local writes are not throttled. */
+let cloudTimer = null, cloudPending = null;
+async function writeSave(s) {
+  s.updated = Date.now();
+  try { await window.storage.set(SAVE_KEY, JSON.stringify(s)); } catch (e) { /* offline */ }
+  if (!API || !s.name) return;
+  cloudPending = s;
+  if (cloudTimer) return;
+  cloudTimer = setTimeout(async () => {
+    cloudTimer = null;
+    const payload = cloudPending; cloudPending = null;
+    if (!payload) return;
+    const secret = await getSecret();
+    await api('/save', { method: 'PUT', body: JSON.stringify({ name: payload.name, secret, save: payload }) });
+  }, 20000);
+}
+
 async function loadBoard() {
+  if (API) {
+    const r = await api('/board');
+    if (r && r.ok && r.body && typeof r.body === 'object') return r.body;
+  }
   try { const r = await window.storage.get(LB_KEY, true); return r ? JSON.parse(r.value) : {}; }
   catch { return {}; }
 }
+
 async function submitTime(name, levelId, ms) {
+  if (API) {
+    const secret = await getSecret();
+    const r = await api('/submit', { method: 'POST', body: JSON.stringify({ name, secret, level: levelId, ms }) });
+    if (r && r.ok && r.body && typeof r.body === 'object') return r.body;
+    // fall through to the local board if the server is unreachable, so a
+    // clear is never lost just because the player was on a bad connection
+  }
   try {
     const board = await loadBoard();
     const key = 'L' + levelId;
@@ -1756,11 +1869,26 @@ function FightScreen({ levelId, save, onEnd, onQuit }) {
   useEffect(() => {
     gRef.current = newGame(levelId, save);
     doneRef.current = false;
-    const c = cvs.current; if (!c) return;
-    const dpr = Math.min(2, window.devicePixelRatio || 1);
-    c.width = W * dpr; c.height = H * dpr;
-    const ctx = c.getContext('2d');
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    /* The canvas element is replaced whenever the layout switches between the
+       desktop and touch trees, or when the device rotates out of the "turn
+       your phone" screen. React does not re-run this effect for that, so the
+       context is re-acquired whenever the element underneath us changes.
+       Caching it once meant drawing into a detached canvas forever. */
+    let ctx = null, canvasEl = null;
+    const ensureCtx = () => {
+      const c = cvs.current;
+      if (!c) { ctx = null; canvasEl = null; return null; }
+      if (c !== canvasEl) {
+        canvasEl = c;
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        c.width = W * dpr; c.height = H * dpr;
+        ctx = c.getContext('2d');
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      return ctx;
+    };
+
     let raf = 0, last = performance.now(), hudT = 0;
     const loop = (now) => {
       raf = requestAnimationFrame(loop);
@@ -1770,7 +1898,8 @@ function FightScreen({ levelId, save, onEnd, onQuit }) {
         step(g, dt, inp.current);
         inp.current.up = false; inp.current.dash = false; inp.current.special = false;
       }
-      drawScene(ctx, g, save);
+      const cx = ensureCtx();
+      if (cx) drawScene(cx, g, save);
       hudT += dt;
       if (hudT > 70) {
         hudT = 0;
@@ -1885,7 +2014,7 @@ function FightScreen({ levelId, save, onEnd, onQuit }) {
         ) : (
           <>
             <div style={{ position: 'absolute', inset: 0, display: 'grid', placeItems: 'center' }}>
-              <canvas ref={cvs} style={{ width: '100%', height: '100%', maxWidth: 'calc(100vh * 16 / 9)', maxHeight: 'calc(100vw * 9 / 16)', display: 'block', background: C.paper }} />
+              <canvas ref={cvs} style={{ width: '100%', height: '100%', objectFit: 'contain', display: 'block', background: C.paper }} />
             </div>
             {hudOverlay}
             <button onClick={() => setPaused(p => !p)} onContextMenu={e => e.preventDefault()}
@@ -2582,11 +2711,31 @@ function Preview({ save, w = 150, h = 180 }) {
 /* ============================================================
    NAME ENTRY
    ============================================================ */
-function NameScreen({ onCreate }) {
+function NameScreen({ onCreate, onRestore }) {
   const [v, setV] = useState('');
+  const [code, setCode] = useState('');
+  const [mode, setMode] = useState('new');
+  const [err, setErr] = useState('');
+  const [busy, setBusy] = useState(false);
   const clean = v.replace(/[^A-Za-z0-9 _\-'.]/g, '').slice(0, 14);
   const ok = clean.trim().length >= 2;
-  const go = () => { if (ok) onCreate(clean.trim()); };
+
+  const go = async () => {
+    if (!ok || busy) return;
+    setBusy(true); setErr('');
+    const name = clean.trim();
+    if (mode === 'restore') {
+      const r = await onRestore(name, code.trim());
+      setBusy(false);
+      if (r === 'nomatch') setErr('That code does not match that name. Check both and try again.');
+      else if (r === 'offline') setErr('Cannot reach the server right now.');
+      return;
+    }
+    const r = await claimName(name);
+    if (r === 'taken') { setBusy(false); setErr('Someone already has that name. Pick another, or restore it with your recovery code.'); return; }
+    setBusy(false);
+    onCreate(name);
+  };
   return (
     <div style={{ maxWidth: 640, margin: '0 auto', padding: '40px 16px 60px' }} className="ib-rise">
       <div style={{ textAlign: 'center', marginBottom: 6 }}>
@@ -2606,11 +2755,31 @@ function NameScreen({ onCreate }) {
           style={{ width: '100%', boxSizing: 'border-box', padding: '14px 16px', fontFamily: FONT_DISP, fontWeight: 900,
             fontSize: 28, letterSpacing: '0.08em', textTransform: 'uppercase', color: C.graphite,
             background: 'rgba(255,255,255,0.6)', border: `2.5px solid ${C.graphite}`, borderRadius: 4 }} />
+        {mode === 'restore' && (
+          <input className="ib-in" value={code} onChange={e => setCode(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') go(); }} placeholder="paste your recovery code"
+            style={{ width: '100%', boxSizing: 'border-box', padding: '11px 14px', fontFamily: FONT_DATA,
+              fontSize: 14, color: C.graphite, marginTop: 12, letterSpacing: '0.04em',
+              background: 'rgba(255,255,255,0.6)', border: `2.5px solid ${C.blueDk}`, borderRadius: 4 }} />
+        )}
+        {err && (
+          <div style={{ marginTop: 12, padding: '9px 12px', border: `2.5px solid ${C.red}`, background: 'rgba(196,69,47,0.10)',
+            fontFamily: FONT_DATA, fontSize: 12.5, color: C.red, lineHeight: 1.5 }}>{err}</div>
+        )}
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 18, gap: 12, flexWrap: 'wrap' }}>
           <Label>{`${clean.length}/14`}</Label>
-          <Btn big tone="go" disabled={!ok} onClick={go}>Start drawing</Btn>
+          <Btn big tone="go" disabled={!ok || busy || (mode === 'restore' && code.trim().length < 16)} onClick={go}>
+            {busy ? 'Checking\u2026' : mode === 'restore' ? 'Restore my name' : 'Start drawing'}
+          </Btn>
         </div>
       </Rough>
+      <div style={{ textAlign: 'center', marginTop: 14 }}>
+        <button onClick={() => { setMode(m => m === 'new' ? 'restore' : 'new'); setErr(''); }}
+          style={{ background: 'none', border: 'none', cursor: 'pointer', fontFamily: FONT_DATA, fontSize: 12.5,
+            color: C.blueDk, textDecoration: 'underline', letterSpacing: '0.04em' }}>
+          {mode === 'new' ? 'Already played on another device? Restore your name' : 'Never mind \u2014 start a new fighter'}
+        </button>
+      </div>
     </div>
   );
 }
@@ -2620,6 +2789,13 @@ function NameScreen({ onCreate }) {
    ============================================================ */
 function SettingsScreen({ save, onSave, onBack, onWipe, storageOk }) {
   const [confirm, setConfirm] = useState(false);
+  const [secret, setSecret] = useState('');
+  const [copied, setCopied] = useState(false);
+  useEffect(() => { let live = true; getSecret().then(v => { if (live) setSecret(v); }); return () => { live = false; }; }, []);
+  const copyCode = async () => {
+    try { await navigator.clipboard.writeText(secret); setCopied(true); setTimeout(() => setCopied(false), 1600); }
+    catch { /* clipboard blocked; the code is selectable on screen */ }
+  };
   return (
     <div style={{ maxWidth: 660, margin: '0 auto', padding: '8px 16px 60px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, gap: 10, flexWrap: 'wrap' }}>
@@ -2659,6 +2835,21 @@ function SettingsScreen({ save, onSave, onBack, onWipe, storageOk }) {
           <Hand size={14} col="#6A6355" style={{ marginTop: 6, lineHeight: 1.6 }}>
             {'Bare hands cannot channel it. Once you own any real weapon, every hit you land fills a gold meter under your health. When it is full a fourth button appears above the other three, and your weapon gets its own named move \u2014 a three-pulse shockwave that hits everything around you and cannot be interrupted. It empties the meter the moment you press it, whether or not anything was standing close enough to feel it.'}
           </Hand>
+        </Rough>
+        <Rough pad="16px 18px" fill="rgba(255,255,255,0.30)">
+          <Head size={18}>Your name and recovery code</Head>
+          <Hand size={14} col="#6A6355" style={{ marginTop: 6, lineHeight: 1.6 }}>
+            {'There are no passwords. This device holds a secret code, and the code is what proves the records board name below belongs to you. Save it somewhere. To play the same name on another device, choose "Restore your name" on the opening screen and paste it in.'}
+          </Hand>
+          <div style={{ marginTop: 10, padding: '10px 12px', border: `2.5px dashed ${C.blueDk}`, background: 'rgba(255,255,255,0.45)' }}>
+            <Label>Name</Label>
+            <div style={{ fontFamily: FONT_DISP, fontWeight: 900, fontSize: 20, letterSpacing: '0.08em' }}>{save.name}</div>
+            <Label>Recovery code</Label>
+            <div style={{ fontFamily: FONT_DATA, fontSize: 12, wordBreak: 'break-all', color: '#5A554A', userSelect: 'all' }}>{secret || '\u2026'}</div>
+          </div>
+          <div style={{ display: 'flex', gap: 8, marginTop: 10, flexWrap: 'wrap' }}>
+            <Btn tone="quiet" onClick={copyCode}>{copied ? 'Copied' : 'Copy code'}</Btn>
+          </div>
         </Rough>
         <Rough pad="16px 18px" fill="rgba(255,255,255,0.30)">
           <Head size={18}>Progress</Head>
@@ -2766,7 +2957,18 @@ export default function InkboundApp() {
   }
 
   if (screen === 'name') {
-    return shell(<NameScreen onCreate={(n) => { const s = freshSave(n); persist(s); setScreen('prologue'); }} />);
+    return shell(<NameScreen
+      onCreate={(n) => { const s = freshSave(n); persist(s); setScreen('prologue'); }}
+      onRestore={async (n, code) => {
+        const r = await restoreName(n, code);
+        if (r !== 'ok') return r;
+        const cloud = await pullSave(n);
+        const s = cloud || freshSave(n);
+        persist(s);
+        setBoard(await loadBoard() || {});
+        setScreen(cloud ? 'map' : 'prologue');
+        return 'ok';
+      }} />);
   }
 
   if (screen === 'prologue') {
