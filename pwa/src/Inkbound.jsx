@@ -332,7 +332,7 @@ const freshSave = (name) => ({
 
 /* Bump VERSION on every deploy so testers can tell you which build they are on.
    It is shown at the bottom of Settings. */
-const VERSION = '2.0.0';
+const VERSION = '2.1.0';
 
 /* Old saves are merged onto a fresh one, so adding a new upgrade, wearable or
    save field in a later build never leaves an existing player with undefined
@@ -3587,7 +3587,296 @@ function CFig({ kind, x, y, s = 1, col = C.graphite, flip = false, pose = 'stand
   return null;
 }
 
+function CDesk({ spec }) {
+  const K = spec.id || 'd';
+  const u = (n) => `${K}-${n}`;
+  const url = (n) => `url(#${u(n)})`;
+  const lamp = spec.lamp !== false;
+  const hand = spec.hand !== false;
+  const hs = spec.handScale || 1;      // how close the hand looms
+  const hx = spec.handX == null ? 268 : spec.handX;
+  const hy = spec.handY == null ? -6 : spec.handY;
+
+  return (
+    <svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMax slice"
+      style={{ display: 'block', width: '100%', height: '100%', background: '#141019' }}>
+      <defs>
+        {/* --- the room behind, almost black, warming toward the lamp --- */}
+        <linearGradient id={u('wall')} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#0E0B12" />
+          <stop offset="70%" stopColor="#1C1620" />
+          <stop offset="100%" stopColor="#2A2028" />
+        </linearGradient>
+        {/* --- the tabletop: warm oak, darker as it recedes --- */}
+        <linearGradient id={u('wood')} x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#3B2716" />
+          <stop offset="26%" stopColor="#6B4626" />
+          <stop offset="62%" stopColor="#8A5C31" />
+          <stop offset="100%" stopColor="#4A2F19" />
+        </linearGradient>
+        {/* --- pool of lamplight on the wood --- */}
+        <radialGradient id={u('pool2')} cx="38%" cy="42%" r="62%">
+          <stop offset="0%" stopColor="#FFD9A0" stopOpacity="0.58" />
+          <stop offset="55%" stopColor="#C98B3C" stopOpacity="0.16" />
+          <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+        </radialGradient>
+        {/* --- the cone of light itself --- */}
+        <linearGradient id={u('cone')} x1="0" y1="0" x2="0.35" y2="1">
+          <stop offset="0%" stopColor="#FFE2AE" stopOpacity="0.50" />
+          <stop offset="100%" stopColor="#FFCF86" stopOpacity="0.02" />
+        </linearGradient>
+        {/* --- lamp shade, brushed metal --- */}
+        <linearGradient id={u('shade')} x1="0" y1="0" x2="1" y2="0.4">
+          <stop offset="0%" stopColor="#151318" />
+          <stop offset="34%" stopColor="#5A5460" />
+          <stop offset="52%" stopColor="#A39CA8" />
+          <stop offset="70%" stopColor="#443E4A" />
+          <stop offset="100%" stopColor="#100E13" />
+        </linearGradient>
+        <linearGradient id={u('arm')} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#221E26" />
+          <stop offset="40%" stopColor="#726B78" />
+          <stop offset="62%" stopColor="#332E39" />
+          <stop offset="100%" stopColor="#15121A" />
+        </linearGradient>
+        <radialGradient id={u('bulb')} cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFF6DF" stopOpacity="1" />
+          <stop offset="38%" stopColor="#FFD98F" stopOpacity="0.85" />
+          <stop offset="100%" stopColor="#FFB347" stopOpacity="0" />
+        </radialGradient>
+        {/* --- skin --- */}
+        <linearGradient id={u('skin')} x1="0.05" y1="0.9" x2="0.85" y2="0.1">
+          <stop offset="0%" stopColor="#8A5F40" />
+          <stop offset="26%" stopColor="#5E3E29" />
+          <stop offset="62%" stopColor="#3A2618" />
+          <stop offset="100%" stopColor="#241710" />
+        </linearGradient>
+        <linearGradient id={u('skin2')} x1="0" y1="1" x2="0.7" y2="0">
+          <stop offset="0%" stopColor="#B07C53" />
+          <stop offset="45%" stopColor="#7A5236" />
+          <stop offset="100%" stopColor="#33210F" />
+        </linearGradient>
+        <linearGradient id={u('cuff')} x1="0" y1="0" x2="1" y2="0.6">
+          <stop offset="0%" stopColor="#2B3440" />
+          <stop offset="45%" stopColor="#4C5A6B" />
+          <stop offset="100%" stopColor="#1A2028" />
+        </linearGradient>
+        {/* --- the pen: lacquer barrel and a steel nib --- */}
+        <linearGradient id={u('pen')} x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#0B0A0D" />
+          <stop offset="30%" stopColor="#3A3540" />
+          <stop offset="46%" stopColor="#8E8794" />
+          <stop offset="62%" stopColor="#241F29" />
+          <stop offset="100%" stopColor="#0A090C" />
+        </linearGradient>
+        <linearGradient id={u('nib')} x1="0" y1="0" x2="1" y2="0.3">
+          <stop offset="0%" stopColor="#6E6A62" />
+          <stop offset="40%" stopColor="#D8D2C4" />
+          <stop offset="58%" stopColor="#F5F0E2" />
+          <stop offset="100%" stopColor="#4A463E" />
+        </linearGradient>
+        {/* --- paper --- */}
+        <linearGradient id={u('page2')} x1="0.1" y1="0" x2="0.9" y2="1">
+          <stop offset="0%" stopColor="#FCF5E0" />
+          <stop offset="52%" stopColor="#E7DBBA" />
+          <stop offset="100%" stopColor="#A8946E" />
+        </linearGradient>
+        {/* --- vignette --- */}
+        <radialGradient id={u('vig')} cx="42%" cy="52%" r="78%">
+          <stop offset="0%" stopColor="#000" stopOpacity="0" />
+          <stop offset="62%" stopColor="#000" stopOpacity="0.18" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0.86" />
+        </radialGradient>
+        {/* --- soft shadow / depth of field --- */}
+        <filter id={u('soft')} x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="5" />
+        </filter>
+        <filter id={u('soft2')} x="-40%" y="-40%" width="180%" height="180%">
+          <feGaussianBlur stdDeviation="2.2" />
+        </filter>
+        <filter id={u('far')} x="-20%" y="-20%" width="140%" height="140%">
+          <feGaussianBlur stdDeviation="3.4" />
+        </filter>
+        <filter id={u('glow')} x="-80%" y="-80%" width="260%" height="260%">
+          <feGaussianBlur stdDeviation="7" />
+        </filter>
+      </defs>
+
+      {/* ---------- room ---------- */}
+      <rect x="0" y="0" width="400" height="240" fill={url('wall')} />
+      <g filter={url('far')} opacity="0.5">
+        <rect x="0" y="96" width="400" height="10" fill="#0A070C" />
+        <rect x="286" y="34" width="74" height="66" fill="#221A26" />
+      </g>
+
+      {/* ---------- tabletop ---------- */}
+      <path d="M-10 106 L 410 106 L 410 250 L -10 250 Z" fill={url('wood')} />
+      {/* grain */}
+      <g opacity="0.30">
+        {[112, 122, 134, 148, 164, 182, 202, 224].map((y, i) => (
+          <path key={y} d={`M-10 ${y} q 120 ${i % 2 ? -3.5 : 3.5} 210 0 q 110 ${i % 2 ? 3 : -3} 210 0`}
+            stroke={i % 3 === 0 ? '#3A2412' : '#2E1C0E'} strokeWidth={i % 3 === 0 ? 1.5 : 0.9} fill="none" />
+        ))}
+        {[[62, 130, 9, 4], [250, 168, 12, 5], [340, 200, 8, 3]].map(([cx, cy, rx, ry], i) => (
+          <ellipse key={'k' + i} cx={cx} cy={cy} rx={rx} ry={ry} stroke="#2A1A0C" strokeWidth="1.1" fill="none" />
+        ))}
+      </g>
+      {/* front lip of the table catching a highlight */}
+      <path d="M-10 107 L 410 107 L 410 110 L -10 110 Z" fill="#C08A4E" opacity="0.35" />
+
+      {/* ---------- the light on the wood ---------- */}
+      <ellipse cx="150" cy="176" rx="185" ry="78" fill={url('pool2')} />
+
+      {/* ---------- the page being worked on ---------- */}
+      <g transform="translate(126 168) rotate(-4)">
+        <ellipse cx="6" cy="26" rx="86" ry="15" fill="#150D06" opacity="0.55" filter={url('soft')} />
+        <rect x="-78" y="-40" width="164" height="66" rx="1.5" fill={url('page2')} />
+        <g opacity="0.30">
+          {[-26, -12, 2, 16].map(y => <line key={y} x1="-68" y1={y} x2="76" y2={y} stroke="#8A7A55" strokeWidth="0.8" />)}
+          <line x1="-52" y1="-40" x2="-52" y2="26" stroke="#B4674F" strokeWidth="1" />
+        </g>
+        {/* a small figure, drawn and left there */}
+        <g stroke="#3A3128" strokeWidth="1.8" fill="none" strokeLinecap="round" opacity="0.85">
+          <circle cx="18" cy="-22" r="4.6" />
+          <path d="M18 -17 L 18 -5 M18 -13 L 11 -8 M18 -13 L 25 -8 M18 -5 L 12 4 M18 -5 L 24 4" />
+        </g>
+      </g>
+
+      {/* ---------- the lamp ---------- */}
+      {lamp && (
+        <g>
+          {/* its shadow thrown back across the wood */}
+          <ellipse cx="42" cy="152" rx="46" ry="13" fill="#120A04" opacity="0.5" filter={url('soft')} />
+          {/* arm coming down from off-frame */}
+          <path d="M-6 -10 L 22 -10 L 58 62 L 40 70 Z" fill={url('arm')} />
+          <path d="M2 -10 L 10 -10 L 44 64 L 38 67 Z" fill="#9A93A0" opacity="0.28" />
+          {/* joint */}
+          <circle cx="49" cy="66" r="9" fill="#2A2530" />
+          <circle cx="47" cy="63" r="4.4" fill="#8B8492" opacity="0.7" />
+          {/* shade: a truncated cone seen from the side */}
+          <path d="M40 58 L 92 78 L 78 118 L 26 94 Z" fill={url('shade')} />
+          <path d="M40 58 L 92 78 L 86 90 L 37 71 Z" fill="#CFC7D4" opacity="0.32" />
+          <ellipse cx="52" cy="106" rx="27" ry="11" fill="#0D0B10" transform="rotate(20 52 106)" />
+          <ellipse cx="52" cy="105" rx="24" ry="9" fill="#3A2A18" transform="rotate(20 52 105)" />
+          <path d="M26 94 L 78 118" stroke="#0C0A10" strokeWidth="2.4" />
+          {/* the light source */}
+          <ellipse cx="52" cy="104" rx="19" ry="8" fill={url('bulb')} transform="rotate(20 52 104)" filter={url('soft2')} />
+          <ellipse cx="52" cy="104" rx="66" ry="40" fill={url('bulb')} opacity="0.40" filter={url('glow')} />
+          {/* the cone */}
+          <path d="M28 100 L 74 116 L 300 240 L -60 240 Z" fill={url('cone')} filter={url('soft')} opacity="0.85" />
+        </g>
+      )}
+
+      {/* ---------- the hand, looming in from above ----------
+           It sits between you and the only light in the room, so it reads
+           as a dark mass with a warm edge. The silhouette is composited
+           from overlapping shapes in one fill; each curled finger is then
+           sculpted with a lit crescent up-left and a shaded one down-right,
+           which is what makes the digits separate. */}
+      {hand && (() => {
+        const FING = [
+          { x: 116, y: 140, rx: 36, ry: 26, r: -28 },
+          { x: 80,  y: 166, rx: 36, ry: 26, r: -24 },
+          { x: 44,  y: 178, rx: 33, ry: 24, r: -18 },
+          { x: 10,  y: 180, rx: 28, ry: 21, r: -12 },
+        ];
+        const THUMB = { x: -6, y: 126, rx: 40, ry: 27, r: 38 };
+        const lobe = (f, i) => (
+          <g key={'l' + i} transform={`rotate(${f.r} ${f.x} ${f.y})`}>
+            {/* shaded side, away from the lamp */}
+            <ellipse cx={f.x + 8} cy={f.y + 7} rx={f.rx * 0.88} ry={f.ry * 0.86}
+              fill="#1C1109" opacity="0.55" filter={url('soft2')} />
+            {/* lit crescent, toward it */}
+            <ellipse cx={f.x - 7} cy={f.y - 6} rx={f.rx * 0.80} ry={f.ry * 0.78}
+              fill="#96693F" opacity="0.42" filter={url('soft2')} />
+            <ellipse cx={f.x - 10} cy={f.y - 9} rx={f.rx * 0.52} ry={f.ry * 0.50}
+              fill="#C08A55" opacity="0.34" filter={url('soft2')} />
+            {/* the bright edge itself */}
+            <path d={`M${f.x - f.rx * 0.95} ${f.y + f.ry * 0.20}
+                      q ${f.rx * 0.25} ${-f.ry * 1.15} ${f.rx * 1.20} ${-f.ry * 0.92}`}
+              stroke="#FFD49A" strokeWidth="3.2" fill="none" opacity={0.62 - i * 0.09} strokeLinecap="round" />
+            {/* crease where the next finger folds behind it */}
+            <path d={`M${f.x + f.rx * 0.72} ${f.y - f.ry * 0.62}
+                      q ${-f.rx * 0.16} ${f.ry * 0.95} ${-f.rx * 0.90} ${f.ry * 1.02}`}
+              stroke="#150C06" strokeWidth="4.4" fill="none" opacity="0.5" filter={url('soft2')} />
+          </g>
+        );
+
+        return (
+          <g transform={`translate(${hx} ${hy}) scale(${hs}) rotate(4)`}>
+            {/* thrown down and to the right, away from the lamp */}
+            <g opacity="0.40" filter={url('soft')}>
+              <ellipse cx="52" cy="212" rx="86" ry="24" fill="#0C0602" />
+              <ellipse cx="4" cy="198" rx="40" ry="15" fill="#0C0602" opacity="0.6" />
+            </g>
+
+            {/* one flat silhouette, so nothing reads as a separate object */}
+            <g fill="#2A1A10">
+              <path d="M6 -70 L118 -70 L128 44 L14 54 Z" />
+              <ellipse cx="62" cy="92" rx="72" ry="56" />
+              {FING.map((f, i) => (
+                <ellipse key={'s' + i} cx={f.x} cy={f.y} rx={f.rx} ry={f.ry} transform={`rotate(${f.r} ${f.x} ${f.y})`} />
+              ))}
+              <ellipse cx={THUMB.x} cy={THUMB.y} rx={THUMB.rx} ry={THUMB.ry} transform={`rotate(${THUMB.r} ${THUMB.x} ${THUMB.y})`} />
+            </g>
+
+            {/* sleeve over the wrist */}
+            <path d="M6 -70 L118 -70 L128 40 L14 50 Z" fill={url('cuff')} />
+            <path d="M16 -70 L34 -70 L46 44 L26 47 Z" fill="#8296AC" opacity="0.16" />
+            <path d="M14 32 L127 20 L129 46 L17 58 Z" fill="#161C23" />
+            <path d="M14 35 L127 23" stroke="#7C8EA4" strokeWidth="2.2" opacity="0.30" fill="none" />
+
+            {/* the back of the hand: dark, with the knuckle ridge catching light */}
+            <ellipse cx="62" cy="92" rx="72" ry="56" fill={url('skin')} />
+            <ellipse cx="86" cy="76" rx="54" ry="40" fill="#180F08" opacity="0.45" filter={url('soft')} />
+            <path d="M-2 104 q 30 -26 64 -25 q 36 1 62 20"
+              stroke="#B07A48" strokeWidth="13" fill="none" opacity="0.28" filter={url('soft2')} />
+            <g opacity="0.14" stroke="#8A5C38" fill="none" strokeWidth="3" strokeLinecap="round">
+              <path d="M28 52 q 12 24 10 42" /><path d="M52 46 q 10 26 12 44" />
+              <path d="M76 46 q 8 24 14 42" /><path d="M98 54 q 6 20 12 34" />
+            </g>
+
+            {FING.map(lobe)}
+
+            {/* thumb, closest to the light and to you */}
+            <g transform={`rotate(${THUMB.r} ${THUMB.x} ${THUMB.y})`}>
+              <ellipse cx={THUMB.x + 8} cy={THUMB.y + 7} rx="35" ry="24" fill="#1C1109" opacity="0.5" filter={url('soft2')} />
+              <ellipse cx={THUMB.x - 8} cy={THUMB.y - 7} rx="32" ry="22" fill="#A0723F" opacity="0.45" filter={url('soft2')} />
+              <ellipse cx={THUMB.x - 12} cy={THUMB.y - 10} rx="20" ry="14" fill="#CE9457" opacity="0.36" filter={url('soft2')} />
+              <path d={`M${THUMB.x - 38} ${THUMB.y + 6} q 10 -31 46 -25`}
+                stroke="#FFDCA6" strokeWidth="3.6" fill="none" opacity="0.66" strokeLinecap="round" />
+            </g>
+            {/* the web between thumb and hand */}
+            <path d="M-26 106 q 20 12 26 34" stroke="#120A05" strokeWidth="13" fill="none" opacity="0.45" filter={url('soft2')} />
+
+            {/* rim along the outer edge of the whole hand */}
+            <path d="M-8 66 q 4 -26 20 -36" stroke="#FFD096" strokeWidth="3.4" fill="none" opacity="0.5" strokeLinecap="round" />
+            <path d="M130 62 q 8 34 -4 62" stroke="#7A5230" strokeWidth="3" fill="none" opacity="0.35" strokeLinecap="round" />
+
+            {/* the pen */}
+            <g transform="translate(14 74) rotate(28)">
+              <rect x="-11" y="-190" width="22" height="234" rx="6" fill={url('pen')} />
+              <rect x="-4.5" y="-190" width="4.5" height="234" fill="#CFC8D6" opacity="0.34" />
+              <rect x="-12" y="4" width="24" height="10" rx="2.5" fill="#948DA0" opacity="0.75" />
+              <rect x="-12" y="-104" width="24" height="7" rx="2" fill="#6E6878" opacity="0.6" />
+              <path d="M-11 44 L 11 44 L 3 96 L 0.5 110 L -2 96 Z" fill={url('nib')} />
+              <path d="M0.5 58 L 0.5 102" stroke="#2C2A26" strokeWidth="1.7" />
+              <path d="M-6 50 L 6 50" stroke="#33312C" strokeWidth="1.5" />
+              <circle cx="0.5" cy="109" r="3.6" fill="#151119" opacity="0.92" />
+            </g>
+          </g>
+        );
+      })()}
+
+      {/* ---------- grade ---------- */}
+      <rect x="0" y="0" width="400" height="240" fill={url('vig')} />
+      <rect x="0" y="0" width="400" height="240" fill="#2A1A08" opacity="0.10" />
+    </svg>
+  );
+}
+
 function CScene({ spec }) {
+  if (spec.photo) return <CDesk spec={spec} />;
   const bgCol = spec.dark ? '#242028' : spec.bg || C.paper;
   const line = spec.dark ? '#6A6355' : C.graphite;
   return (
@@ -3646,7 +3935,7 @@ const SC = {
   pro: [
     { rules: 1, margin: 1, items: [{ kind: 'hero', x: 66, y: 104, pose: 'fallen' }] },
     { rules: 1, margin: 1, items: [{ kind: 'hero', x: 70, y: 104, pose: 'look' }], speed: [110, 40] },
-    { dark: 1, spot: 1, id: 'p3', ground: false, items: [{ kind: 'lamp', x: 26, y: 112, s: 0.74, col: '#6A6355' }, { kind: 'hand', x: 150, y: 50, s: 0.62, col: '#8A8270' }] },
+    { photo: 1, id: 'p3', lamp: true, hand: true, handScale: 0.95, handX: 262, handY: -14 },
     { dark: 1, spot: 1, id: 'p4', items: [{ kind: 'hero', x: 44, y: 104, pose: 'swing', col: '#B9B2A1' }, { kind: 'architect', x: 156, y: 104 }] },
   ],
   ch: {
@@ -3661,7 +3950,7 @@ const SC = {
     5: [{ items: [{ kind: 'copy', x: 138, y: 104, col: '#7A6A55', pose: 'fallen' }, { kind: 'hero', x: 58, y: 104, pose: 'stand' }] },
         { items: [{ kind: 'crumple', x: 150, y: 100, col: '#8A8270' }, { kind: 'hero', x: 56, y: 104, pose: 'look' }] }],
     6: [{ dark: 1, spot: 1, id: 'c61', items: [{ kind: 'nib', x: 150, y: 118, col: C.purple }, { kind: 'hero', x: 52, y: 104, pose: 'stand', col: '#B9B2A1' }] },
-        { dark: 1, spot: 1, id: 'c62', ground: false, items: [{ kind: 'hand', x: 152, y: 44, s: 0.58, col: '#8A8270' }, { kind: 'lamp', x: 28, y: 112, s: 0.70, col: '#6A6355' }] },
+        { photo: 1, id: 'c62', lamp: true, hand: true, handScale: 0.80, handX: 288, handY: -52 },
         { dark: 1, id: 'c63', items: [{ kind: 'hero', x: 150, y: 104, pose: 'run', col: C.ink }], speed: [20, 60] }],
   },
   lv: {
@@ -3698,7 +3987,7 @@ const SC = {
     16: [{ dark: 1, spot: 1, id: 'l16', items: [{ kind: 'hero', x: 52, y: 104, pose: 'run', col: '#B9B2A1' }, { kind: 'nib', x: 164, y: 116, col: C.purple }] },
          { dark: 1, id: 'l16b', items: [{ kind: 'hero', x: 58, y: 104, pose: 'up', col: '#B9B2A1' }], pit: [104, 140] }],
     17: [{ dark: 1, margin: 1, id: 'l17', items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard', col: '#B9B2A1' }] },
-         { dark: 1, spot: 1, id: 'l17b', ground: false, items: [{ kind: 'hand', x: 142, y: 50, s: 0.60, col: '#8A8270' }] }],
+         { photo: 1, id: 'l17b', lamp: false, hand: true, handScale: 1.30, handX: 236, handY: -78 }],
     18: [{ dark: 1, spot: 1, id: 'l18', items: [{ kind: 'architect', x: 150, y: 104 }, { kind: 'hero', x: 48, y: 104, pose: 'stand', col: '#B9B2A1' }] },
          { dark: 1, spot: 1, id: 'l18b', items: [{ kind: 'architect', x: 146, y: 104 }, { kind: 'hero', x: 52, y: 104, pose: 'swing', col: C.ink }], star: [100, 72] }],
   },
