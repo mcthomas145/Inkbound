@@ -126,37 +126,37 @@ const LEVELS = [
     'You wake up as four lines and a circle. Someone drew you in the margin and then stopped paying attention.\n\nThere is scribbling nearby. It is coming toward you.\n\nThe scribbling here is all loops, and cutting across a loop only pulls the knot tighter. The ones that come apart are the ones something lifted off the page first.'),
   mk(2,1,'Crossed Out','fight',[['scribbler',3],['scribbler',4]],16,200,
     'A voice from somewhere above the page: "Rough. Keep going."\n\nYou keep going.\n\nYou pass a ball of crossed-out lines twitching in the gutter. It holds together fine until a draught gets under it, and then it just unwinds.'),
-  mk(3,1,'SCRIBBLE','boss',[['scribbler',3],['scribbler',4],['boss','scribble']],30,540,
+  mk(3,1,'SCRIBBLE','boss',[['scribbler',3],['scribbler',4],['boss','scribble']],28,540,
     'It is what happens to a drawing when the hand gets angry. Every wrong line the Architect ever made, balled up and left alive in the margin.\n\nIt does not want anything. That is what makes it hard.'),
   mk(4,2,'White Noise','fight',[['dasher',3],['scribbler',3],['dasher',3]],18,300,
     'Past the margin, the page goes pale. Whole shapes stand around with their outlines missing, waiting to be finished. They will not be.\n\nOne of them notices you still have all of yours.\n\nA half-finished shape watches you swing at a smear and pass clean through it. \u201CNo edge on those,\u201D it says. \u201CYou can\u2019t cut a puddle. You have to get above it and put your weight through it.\u201D'),
   mk(5,2,'Half-Erased','fight',[['scribbler',4],['lobber',2],['dasher',4]],18,360,
     'A stick figure with no legs drags itself out of your way. "He erases the ones who ask questions," it says. "Ask fewer."\n\nYou ask which way.\n\nYou corner something grey against the margin and hit it flat from the side four times for nothing. Then you jump, come down on it, and it makes a sound like a wet page tearing.'),
-  mk(6,2,'SMUDGE','boss',[['dasher',3],['scribbler',4],['brute',2],['boss','smudge']],49,840,
+  mk(6,2,'SMUDGE','boss',[['dasher',3],['scribbler',4],['brute',2],['boss','smudge']],52,840,
     'The Architect\u2019s second mistake: he tried to rub out the first one. SMUDGE is what the rubbing became.\n\nIt has no edge to hit. You will have to find where it stops being blurry.'),
   mk(7,3,'Ruled Lines','fight',[['brute',2],['scribbler',4],['lobber',2]],19,450,
     'The Grid begins exactly where the Eraser Fields end, on a line you could measure. Everything stands at right angles. Everything is waiting for permission.\n\nYou are the only curve here.\n\nEverything here is measured down from a line at the top of the page. You duck under a ruled beam and notice the measuring simply stops \u2014 below the baseline nothing is marked at all.'),
   mk(8,3,'Right Angles','fight',[['dasher',4],['brute',2],['lobber',3]],20,510,
     'They march in squares. They turn in ninety degrees. A guard stops you and asks for your reference number.\n\nYou tell it your name instead.\n\nA lobber tells you the ruled things only see what they can measure. \u201CThey have no number for your ankles,\u201D it says, and goes back to throwing.'),
-  mk(9,3,'THE STRAIGHTEDGE','boss',[['lobber',3],['brute',2],['dasher',4],['boss','straightedge']],51,1280,
+  mk(9,3,'THE STRAIGHTEDGE','boss',[['lobber',3],['brute',2],['dasher',4],['boss','straightedge']],56,1280,
     'It was drawn to keep the world tidy and it has never once been wrong, because it decides what wrong means.\n\nIt has read your file. It is disappointed.'),
   mk(10,4,'Wet Paint','fight',[['lobber',3],['dasher',4],['brute',2]],21,590,
     'Colour gets out of the tray and nothing behaves. The ground is tacky. Shapes bleed into each other and come apart wrong.\n\nSomething red is having a very good time up ahead.\n\nThe colours here arrive as throws. Take one on the guard at the moment it lands and it stains you the same shade, and for a breath the thing that threw it cannot tell where it stops and you start.'),
   mk(11,4,'Running Colours','fight',[['brute',2],['copy',2],['lobber',3],['dasher',3]],22,690,
     'The Architect keeps his failures separated by hue so they cannot mix and organise.\n\nYou walk through the dividing line. They mix.\n\nYou watch a swatch batter itself against its own reflection in a puddle of thinner, unable to work out which one to hit.'),
-  mk(12,4,'CHROMA','boss',[['dasher',4],['lobber',3],['brute',3],['boss','chroma']],68,1860,
+  mk(12,4,'CHROMA','boss',[['dasher',4],['lobber',3],['brute',3],['boss','chroma']],78,1860,
     'Four moods in one body, and it changes which one it is whenever it gets bored.\n\nRead the colour. The colour is the only warning you get.'),
   mk(13,5,'Rough Sketch','fight',[['copy',2],['brute',2],['dasher',4],['scribbler',4]],26,780,
     'The Draft is a drawer. Every version of everything that got thrown out is still in here, still moving.\n\nYou see three of yourself before you stop counting.\n\nThe drafts in this drawer have been rehearsing. One is working through a routine of your own moves \u2014 every one you have ever thrown, in order, and nothing else. It has no answer for anything it has not been shown.'),
   mk(14,5,'Tracing Paper','fight',[['copy',3],['lobber',3],['brute',3],['copy',2]],26,930,
     'They copy your stance. Your weapon. The way you favour one side when you\u2019re tired.\n\nThe only thing they cannot copy is that you chose to come here.\n\nA copy mirrors you for a while and does it well, right up until you do something new. Then it stands there with its hands up, waiting for a page that was never drawn.'),
-  mk(15,5,'THE UNDERSTUDY','boss',[['copy',2],['brute',3],['dasher',4],['boss','understudy']],59,2700,
+  mk(15,5,'THE UNDERSTUDY','boss',[['copy',2],['brute',3],['dasher',4],['boss','understudy']],62,2700,
     'Version one. Drawn before you, with the same hand, on a better morning \u2014 and then set aside for reasons never written down.\n\nIt has been practising for this the entire time you were alive.'),
   mk(16,6,'The Gutter','fight',[['brute',3],['copy',3],['dasher',4],['lobber',4]],22,1030,
     'The seam where two pages meet. The lamp is close enough now to feel warm.\n\nEverything he has left throws itself into the gap.\n\nThe pen passes overhead and everything it is not touching goes soft. He can draw or he can rub out, you realise. He has never once done both.'),
   mk(17,6,'Last Margin','fight',[['copy',4],['brute',4],['dasher',5],['lobber',4]],25,1220,
     'One strip of blank between you and him. It is the same margin you woke up in, at the other end of the page.\n\nThe hand above stops moving. It has seen you.\n\nYou wait out a long stroke pressed flat against the margin. While the pen is moving nothing else on the page is being held together \u2014 including, you suspect, him.'),
-  mk(18,6,'THE ARCHITECT','boss',[['brute',3],['copy',3],['lobber',4],['dasher',4],['boss','architect']],118,4860,
+  mk(18,6,'THE ARCHITECT','boss',[['brute',3],['copy',3],['lobber',4],['dasher',4],['boss','architect']],124,4860,
     'He is not larger than you. That is the first surprise.\n\nHe holds the pen the way you hold your weapon, and he says, without much interest: "You were a warm-up. I do this every morning."'),
 ];
 
@@ -332,7 +332,7 @@ const freshSave = (name) => ({
 
 /* Bump VERSION on every deploy so testers can tell you which build they are on.
    It is shown at the bottom of Settings. */
-const VERSION = '2.1.0';
+const VERSION = '2.2.0';
 
 /* Old saves are merged onto a fresh one, so adding a new upgrade, wearable or
    save field in a later build never leaves an existing player with undefined
@@ -972,11 +972,28 @@ function drawBack(ctx, id, sx, sy, hipY, face, t, vx) {
    ============================================================ */
 
 const POSE_KEYS = ['armF', 'armB', 'elF', 'elB', 'legF', 'legB', 'kneeF', 'kneeB', 'lean', 'crouch'];
-/* stiffness: how hard the joint chases. damping: how much wobble survives.
-   Legs and spine are firm so the figure looks planted; arms are loose. */
-const P_STIFF = { lean: 0.30, crouch: 0.38, armF: 0.25, armB: 0.23, elF: 0.27, elB: 0.25, legF: 0.34, legB: 0.32, kneeF: 0.30, kneeB: 0.28 };
-const P_DAMP = { lean: 0.76, crouch: 0.73, armF: 0.63, armB: 0.62, elF: 0.64, elB: 0.63, legF: 0.75, legB: 0.74, kneeF: 0.68, kneeB: 0.67 };
-const BOW = { armF: 62, armB: 58, elF: 46, elB: 44, legF: 40, legB: 38, kneeF: 34, kneeB: 32 };
+/* stiffness: how hard the joint chases its target.
+   damping: how much velocity survives each frame, so a HIGH number wobbles
+   and a low one arrives and stops. An athlete arrives and stops: the limb
+   gets there in three or four frames, holds, and only the very ends of it
+   carry any follow-through at all. */
+const P_STIFF = { lean: 0.58, crouch: 0.62, armF: 0.66, armB: 0.60, elF: 0.68, elB: 0.62, legF: 0.70, legB: 0.66, kneeF: 0.66, kneeB: 0.62 };
+const P_DAMP = { lean: 0.50, crouch: 0.48, armF: 0.52, armB: 0.50, elF: 0.50, elB: 0.48, legF: 0.46, legB: 0.45, kneeF: 0.48, kneeB: 0.47 };
+/* limbs barely bow now \u2014 bowing is what made it look boneless */
+const BOW = { armF: 16, armB: 15, elF: 12, elB: 11, legF: 10, legB: 10, kneeF: 9, kneeB: 8 };
+
+/* The shape of a strike. Nothing athletic is linear: it coils, fires in a
+   couple of frames, HOLDS at full extension so the eye can read the pose,
+   then recovers. Returns -1..1, negative being the wind-up. */
+function strike(p, coil = 0.26, fire = 0.10, hold = 0.34) {
+  if (p < coil) return -Math.sin((p / coil) * 1.5708);
+  const q = (p - coil) / fire;
+  if (q < 1) return -Math.cos(q * 1.5708) + Math.sin(q * 1.5708) * 1.06;
+  const h = (p - coil - fire) / hold;
+  if (h < 1) return 1 - h * 0.06;
+  const r = clamp((p - coil - fire - hold) / Math.max(0.001, 1 - coil - fire - hold), 0, 1);
+  return (1 - r) * 0.94 - r * 0.12;
+}
 
 function poseTargets(e, t) {
   const st = e.state, dur = e.stateDur || 1;
@@ -1003,32 +1020,38 @@ function poseTargets(e, t) {
     o.lean = p < 0.55 ? -0.3 : 0.4; o.legF = 0.6; o.legB = -0.5; o.crouch = 3;
   } else if (st === 'jab' || st === 'cross') {
     const punch = st === 'cross';
-    const ext = p < 0.34 ? -1.2 + p * 1.0 : Math.min(1.62, -0.9 + (p - 0.34) * 9);
-    o.armF = ext; o.elF = p < 0.34 ? 1.35 : 0.06;
-    o.armB = -ext * 0.5; o.elB = 1.1;
-    o.lean = p < 0.34 ? -0.10 : (punch ? 0.30 : 0.20);
-    o.legF = 0.42; o.legB = -0.34; o.crouch = punch ? 2 : 1;
+    const e = strike(p, 0.20, 0.09, 0.34);
+    o.armF = e * 1.62; o.elF = 1.35 - Math.max(0, e) * 1.29;
+    o.armB = -e * 0.6; o.elB = 1.1 - Math.max(0, e) * 0.4;
+    /* the hips turn into it, which is where a punch actually comes from */
+    o.lean = e * (punch ? 0.32 : 0.22);
+    o.legF = 0.42 + Math.max(0, e) * 0.22; o.legB = -0.34 - Math.max(0, e) * 0.20;
+    o.crouch = (punch ? 2 : 1) + Math.max(0, e) * 3;
   } else if (st === 'elbow') {
-    const ext = p < 0.42 ? -1.9 + p * 0.8 : Math.min(1.5, -1.6 + (p - 0.42) * 8);
-    o.armF = ext; o.elF = 2.1 - clamp(p, 0, 1) * 1.4; o.armB = 1.3; o.elB = 1.6;
-    o.lean = p < 0.42 ? -0.34 : 0.46;
-    o.legF = 0.66; o.legB = -0.52; o.crouch = 4;
+    const e = strike(p, 0.30, 0.08, 0.32);
+    o.armF = e * 1.5; o.elF = 2.1 - Math.max(0, e) * 1.5;
+    o.armB = 1.3 - e * 0.5; o.elB = 1.6;
+    o.lean = e * 0.48;
+    o.legF = 0.66 + Math.max(0, e) * 0.24; o.legB = -0.52 - Math.max(0, e) * 0.22;
+    o.crouch = 4 + Math.max(0, e) * 5;
   } else if (st === 'upper') {
-    /* dropped low, then everything comes up at once */
-    const rise = clamp((p - 0.18) / 0.34, 0, 1);
-    o.armF = -1.1 + rise * 3.3; o.elF = 1.5 - rise * 1.45;
-    o.armB = 0.9 - rise * 1.2; o.elB = 1.3;
-    o.lean = -0.30 + rise * 0.46;
-    o.crouch = 9 - rise * 22;
-    o.legF = 0.30 + rise * 0.35; o.legB = -0.28 - rise * 0.5;
-    o.kneeF = 0.9 - rise * 0.8; o.kneeB = 0.7 - rise * 0.6;
+    /* sinks into the legs, then the whole body extends at once */
+    const e = strike(p, 0.24, 0.08, 0.36);
+    const rise = Math.max(0, e);
+    o.armF = -1.1 + rise * 3.5 + Math.min(0, e) * 0.5; o.elF = 1.5 - rise * 1.46;
+    o.armB = 0.9 - rise * 1.3; o.elB = 1.3;
+    o.lean = e * 0.42;
+    o.crouch = 12 * -Math.min(0, e) - rise * 26;
+    o.legF = 0.30 + rise * 0.40; o.legB = -0.28 - rise * 0.56;
+    o.kneeF = 0.95 - rise * 0.88; o.kneeB = 0.78 - rise * 0.70;
   } else if (st === 'sweep') {
-    const out = p < 0.34 ? p / 0.34 : p > 0.74 ? (1 - p) / 0.26 : 1;
-    o.crouch = 16 + out * 6;
-    o.legF = 1.35 * out + 0.2; o.kneeF = 0.05;
-    o.legB = -0.9; o.kneeB = 1.7;
-    o.armF = 0.9; o.elF = 0.3; o.armB = -1.0; o.elB = 0.5;
-    o.lean = -0.34;
+    /* drops to one hand and takes the legs out from under them */
+    const e = strike(p, 0.22, 0.09, 0.36), out = Math.max(0, e);
+    o.crouch = 16 + out * 9;
+    o.legF = 1.48 * out + 0.2; o.kneeF = 0.05;
+    o.legB = -0.9 - out * 0.3; o.kneeB = 1.7;
+    o.armF = 0.9 + out * 0.5; o.elF = 0.3; o.armB = -1.0 - out * 0.4; o.elB = 0.5;
+    o.lean = -0.34 - out * 0.14;
   } else if (st === 'slide') {
     const out = p > 0.76 ? (1 - p) / 0.24 : 1;
     o.crouch = 22 * out + 4;
@@ -1055,9 +1078,41 @@ function poseTargets(e, t) {
   } else if (st === 'charge') {
     o.lean = 0.52; o.armF = 1.45; o.elF = 0.12; o.armB = -1.2; o.elB = 0.9;
     o.legF = 0.82; o.legB = -0.66; o.crouch = 5;
+  } else if (st === 'cartwheel') {
+    /* legs split wide, arms locked out — the body is a spoke */
+    o.legF = 1.15; o.legB = -1.05; o.kneeF = 0.06; o.kneeB = 0.10;
+    o.armF = -2.5; o.armB = 2.4; o.elF = 0.05; o.elB = 0.05;
+    o.lean = 0.10; o.crouch = -6;
+  } else if (st === 'backflip') {
+    /* tucked at the top, opening out on the way down */
+    const tuck = Math.sin(clamp(p, 0, 1) * 3.14159);
+    o.legF = 0.55 + tuck * 0.55; o.legB = -0.35 - tuck * 0.35;
+    o.kneeF = 0.35 + tuck * 1.75; o.kneeB = 0.35 + tuck * 1.85;
+    o.armF = -1.5 - tuck * 0.9; o.armB = 1.3 + tuck * 0.8;
+    o.elF = 0.4 + tuck * 1.5; o.elB = 0.4 + tuck * 1.4;
+    o.lean = -0.14; o.crouch = 6 + tuck * 12;
+  } else if (st === 'vault') {
+    /* one arm down onto them, legs scissoring over the top */
+    const over = Math.sin(clamp(p, 0, 1) * 3.14159);
+    o.armF = 2.45; o.elF = 0.06;
+    o.armB = -1.6 - over * 0.7; o.elB = 0.5;
+    o.legF = 0.75 + over * 0.85; o.legB = -0.55 - over * 0.75;
+    o.kneeF = 0.15; o.kneeB = 0.9 - over * 0.7;
+    o.lean = 0.34 + over * 0.24; o.crouch = -4 - over * 8;
+  } else if (st === 'wallkick') {
+    /* pushed off, twisting to face back out */
+    const t2 = clamp(p, 0, 1);
+    o.legF = 1.25 - t2 * 0.75; o.legB = -0.45 - t2 * 0.3;
+    o.kneeF = 0.10 + t2 * 0.8; o.kneeB = 1.3 - t2 * 0.9;
+    o.armF = -1.9; o.armB = 1.7; o.elF = 0.3; o.elB = 0.9;
+    o.lean = -0.28 + t2 * 0.34; o.crouch = -4;
   } else if (st === 'land') {
-    o.crouch = 13 * (1 - p); o.kneeF = 0.9 * (1 - p) + 0.2; o.kneeB = 0.9 * (1 - p) + 0.2;
-    o.armF = -0.9; o.armB = 0.9; o.lean = 0.12 * (1 - p);
+    /* knees take it, arms come out for balance, then up */
+    const ab = 1 - clamp(p, 0, 1);
+    o.crouch = 20 * ab; o.kneeF = 1.4 * ab + 0.2; o.kneeB = 1.4 * ab + 0.2;
+    o.legF = 0.42 + ab * 0.30; o.legB = -0.36 - ab * 0.26;
+    o.armF = -0.9 - ab * 1.1; o.armB = 0.9 + ab * 1.0; o.elF = 0.7 - ab * 0.5; o.elB = 0.7 - ab * 0.5;
+    o.lean = 0.16 * ab;
   } else if (st === 'down') {
     o.crouch = 0; o.lean = 0; o.armF = -0.6; o.armB = 0.7; o.elF = 0.4; o.elB = 0.4;
     o.legF = 0.5; o.legB = -0.2; o.kneeF = 0.7; o.kneeB = 0.4;
@@ -1127,6 +1182,15 @@ function drawFighter(ctx, e, look, t) {
     ctx.translate(x, y - h * 0.50);
     ctx.rotate(p * Math.PI * 2 * face);
     ctx.translate(-x, -(y - h * 0.50));
+  } else if (e.state === 'cartwheel' || e.state === 'backflip' || e.state === 'vault' || e.state === 'wallkick') {
+    /* the whole figure turns; the pivot sits at the hips so it wheels
+       rather than swinging from the feet */
+    const p = clamp(e.stateT / (e.stateDur || 1), 0, 1);
+    const turns = { cartwheel: 1, backflip: -1.35, vault: 0.55, wallkick: -0.85 }[e.state] || 1;
+    const ease = e.state === 'cartwheel' ? p : p < 0.86 ? p / 0.86 : 1;
+    ctx.translate(x, y - h * 0.48);
+    ctx.rotate(ease * Math.PI * 2 * turns * face);
+    ctx.translate(-x, -(y - h * 0.48));
   } else if (e.state === 'down' || e.state === 'getup') {
     /* tips flat onto the page, then levers back upright */
     const p = clamp(e.stateT / (e.stateDur || 1), 0, 1);
@@ -1165,7 +1229,8 @@ function drawFighter(ctx, e, look, t) {
   const leg = (ang, knee, vAng, vKnee, seed) => {
     const kx = x + Math.sin(ang) * (h * 0.24) * face, ky = hy + Math.cos(ang) * (h * 0.24);
     const fx = kx + Math.sin(ang - knee * 0.5) * (h * 0.24) * face;
-    const fy = ((e.dead && e.launched) || e.state === 'down' || e.state === 'getup') ? ky + Math.cos(ang - knee * 0.5) * (h * 0.24)
+    const airborne = e.state === 'cartwheel' || e.state === 'backflip' || e.state === 'vault' || e.state === 'wallkick';
+    const fy = ((e.dead && e.launched) || airborne || e.state === 'down' || e.state === 'getup') ? ky + Math.cos(ang - knee * 0.5) * (h * 0.24)
       : Math.min(y, ky + Math.cos(ang - knee * 0.5) * (h * 0.24));
     jcurve(ctx, x, hy, kx, ky, vAng * BOW.legF * sc * face, seed, 0.7);
     jcurve(ctx, kx, ky, fx, fy, vKnee * BOW.kneeF * sc * face, seed + 1, 0.7);
@@ -1599,6 +1664,7 @@ function hurt(g, target, dmg, kbx, fromX, isPlayerSource) {
       g.shake = Math.max(g.shake, 12);
       g.rings.push({ x:target.x, y:target.y - target.h * 0.5, r:14, max:120, life:340, maxLife:340, col:C.ink });
       beep('weak', g.save.muted, 1);
+      g.freeze = Math.max(g.freeze || 0, 150);
       if (!g.weakFound) {
         g.weakFound = true;
         g.banner = 'WEAK POINT'; g.bannerT = 1500;
@@ -1703,9 +1769,11 @@ const ATTACK_STATES = ['jab', 'cross', 'elbow', 'kick', 'spin', 'upper', 'sweep'
 /* Which move comes out, given the situation. */
 function chooseMove(g, p, heavy, holdingDir) {
   const crouched = p.state === 'block' && p.onGround;
-  const dashing = p.state === 'dash';
-
-  if (dashing) return heavy ? 'kick' : 'charge';
+  /* Coming out of a roundoff you are already travelling, so a punch turns
+     into a shoulder charge. Out of a vault you are above them, so it
+     turns into something thrown downward. */
+  if (p.state === 'cartwheel') return heavy ? 'kick' : 'charge';
+  if (p.state === 'vault') return heavy ? 'stomp' : 'divekick';
   if (crouched) return heavy ? 'sweep' : 'upper';        // rise out of the guard
   if (!p.onGround) {
     if (!heavy) return 'airjab';
@@ -1811,6 +1879,10 @@ function resolveHit(g, mv, phase) {
   }
 
   if (landed) {
+    /* heavier moves hold contact longer */
+    const stop = { jab: 34, cross: 40, airjab: 34, charge: 62, kick: 62, sweep: 55, slide: 55,
+                   spin: 78, elbow: 82, upper: 74, divekick: 88, stomp: 96 }[mv] || 40;
+    g.freeze = Math.max(g.freeze || 0, phase ? stop * 0.6 : stop);
     /* anything you land is now something you have shown people */
     g.seen = g.seen || {};
     g.seen[mv] = g.tick + 12000;
@@ -2116,6 +2188,17 @@ function bossAI(g, b, dt) {
 
 /* ---- main step ---- */
 function step(g, dt, inp) {
+  /* Hit stop: on a solid connection everything holds for a few frames.
+     The cheapest thing there is for making a blow feel like it landed. */
+  if (g.freeze > 0) {
+    g.freeze -= dt;
+    g.shake *= Math.pow(0.94, dt / 16.667);
+    /* The clock pauses with everything else. Hit stop is presentation, not
+       play, and it is identical for everyone \u2014 charging it to the run
+       would mean the leaderboard quietly punished you for landing hits. */
+    g.tick += dt;
+    return;
+  }
   const k = dt / 16.667;
   g.tick += dt;
   if (g.intro > 0) { g.intro -= dt; } else if (g.phase === 'fight') g.elapsed += dt;
@@ -2142,7 +2225,10 @@ function step(g, dt, inp) {
     if (p.chainT > 0) { p.chainT -= dt; if (p.chainT <= 0) p.chain = 0; }
     const attacking = ATTACK_STATES.includes(p.state);
     const floored = p.state === 'down' || p.state === 'getup';
-    const busy = attacking || p.state === 'hurt' || p.state === 'special' || p.state === 'land' || floored;
+    const ACRO = p.state === 'cartwheel' || p.state === 'backflip' || p.state === 'vault' || p.state === 'wallkick';
+    const CANCELABLE = p.state === 'cartwheel' || p.state === 'vault';
+    const busy = attacking || p.state === 'hurt' || p.state === 'special' || p.state === 'land' || floored
+      || (ACRO && !CANCELABLE);
     const mvDir = (inp.right ? 1 : 0) - (inp.left ? 1 : 0);
     /* Attacks come out of a guard and out of a dash as well as from
        standing, which is what makes the crouching and dashing moves
@@ -2154,7 +2240,7 @@ function step(g, dt, inp) {
     }
 
     const stillBusy = ATTACK_STATES.includes(p.state) || p.state === 'dash' || p.state === 'hurt'
-      || p.state === 'special' || p.state === 'down' || p.state === 'getup' || p.state === 'land';
+      || p.state === 'special' || p.state === 'down' || p.state === 'getup' || p.state === 'land' || ACRO;
     if (active && !stillBusy && p.stun <= 0) {
       const mv = mvDir;
       if (inp.block && p.onGround) {
@@ -2164,12 +2250,43 @@ function step(g, dt, inp) {
         if (mv !== 0) { p.vx += mv * s.spd * 0.42; p.face = mv; p.state = p.onGround ? 'run' : 'jump'; }
         else { p.vx *= 0.74; p.state = p.onGround ? 'idle' : 'jump'; }
         p.vx = clamp(p.vx, -s.spd, s.spd);
-        if (inp.up && p.onGround) { p.vy = -15.4; p.onGround = false; p.state = 'jump'; beep('jump', g.save.muted); }
+        if (inp.up && p.onGround) {
+          /* If there is somebody right in front of you, the jump becomes a
+             handspring over their head instead of a hop on the spot. */
+          let over = null;
+          if (mv === p.face) {
+            for (const e of g.ents) {
+              if (e.dead || e.spawnT > 0 || e.kind === 'boss') continue;
+              const d = (e.x - p.x) * p.face;
+              if (d > 10 && d < 56) { over = e; break; }
+            }
+          }
+          if (over) {
+            p.state = 'vault'; p.stateT = 0; p.stateDur = 640;
+            p.vy = -14.2; p.vx = p.face * 12.5; p.onGround = false;
+            p.iframe = 420; p.jumps = 1; p.vaultX = over.x;
+            g.shake = Math.max(g.shake, 4);
+            for (let i = 0; i < 6; i++) g.parts.push({ x:p.x, y:p.y - 6, vx:rnd(-3,3), vy:rnd(-2,-0.4), life:280, max:280, type:'dust', col:C.paper2, size:8, rot:0 });
+          } else { p.vy = -15.4; p.onGround = false; p.state = 'jump'; }
+          beep('jump', g.save.muted);
+        }
         if (inp.dash && p.dashes > 0 && p.dashCd < 1200) {
           p.dashes--; p.dashCd = 1400;
-          p.state = 'dash'; p.stateT = 0; p.stateDur = 240;
-          p.vx = 15 * p.face; p.iframe = 250; beep('dash', g.save.muted);
-          for (let i = 0; i < 6; i++) g.parts.push({ x:p.x, y:p.y - 30 - i * 5, vx:-p.face * rnd(1,3), vy:rnd(-1,1), life:240, max:240, type:'dust', col:C.paper2, size:8, rot:0 });
+          /* Which way you are leaning decides what comes out. Pushing away
+             from where you are facing is a backflip; anything else is a
+             roundoff that carries you through whatever is in front. */
+          const away = mv === 0;
+          if (away && p.onGround) {
+            p.state = 'backflip'; p.stateT = 0; p.stateDur = 620;
+            p.vx = -p.face * 11; p.vy = -11.5; p.onGround = false;
+            p.iframe = 560; p.jumps = 1;
+          } else {
+            p.state = 'cartwheel'; p.stateT = 0; p.stateDur = 460;
+            p.vx = p.face * 16; p.iframe = 430;
+            if (p.onGround) { p.vy = -7.6; p.onGround = false; p.jumps = 1; }
+          }
+          beep('dash', g.save.muted);
+          for (let i = 0; i < 8; i++) g.parts.push({ x:p.x, y:p.y - 30 - i * 5, vx:-p.face * rnd(1,4), vy:rnd(-2,1), life:280, max:280, type:'dust', col:C.paper2, size:8, rot:0 });
         }
       }
     } else if (p.state === 'block' && (!inp.block || !active)) { p.state = 'idle'; p.blockT = 0; }
@@ -2216,6 +2333,29 @@ function step(g, dt, inp) {
       }
     }
     if (p.state === 'land' && p.stateT >= p.stateDur) { p.state = 'idle'; p.stateT = 0; }
+
+    /* ---------- acrobatics ---------- */
+    if (p.state === 'cartwheel' || p.state === 'backflip' || p.state === 'vault') {
+      if (p.state === 'cartwheel') p.vx *= Math.pow(0.965, k);
+      if (p.stateT >= p.stateDur || (p.onGround && p.stateT > p.stateDur * 0.55)) {
+        p.state = 'land'; p.stateT = 0; p.stateDur = 150;
+        p.vaultX = null;
+        if (p.onGround) for (let i = 0; i < 5; i++) g.parts.push({ x:p.x, y:p.y, vx:rnd(-2.6,2.6), vy:rnd(-1.8,-0.2), life:260, max:260, type:'dust', col:C.paper2, size:7, rot:0 });
+      }
+    }
+    /* A shut gate is a wall, and a wall is something to kick off. */
+    if (!p.onGround && inp.up && !p.wallUsed && p.state !== 'special') {
+      const gx = activeGate(g);
+      if (gx != null && gx - p.x < 34 && p.vy > -4) {
+        p.wallUsed = 1;
+        p.state = 'wallkick'; p.stateT = 0; p.stateDur = 520;
+        p.vy = -14.6; p.vx = -9.5; p.face = -1; p.iframe = 260;
+        beep('jump', g.save.muted); g.shake = Math.max(g.shake, 5);
+        for (let i = 0; i < 7; i++) g.parts.push({ x:gx - 6, y:p.y - 40 + rnd(-16,16), vx:rnd(-4,-1), vy:rnd(-2,2), life:300, max:300, type:'dust', col:C.paper2, size:8, rot:0 });
+      }
+    }
+    if (p.onGround) p.wallUsed = 0;
+    if (p.state === 'wallkick' && (p.stateT >= p.stateDur || p.onGround)) { p.state = p.onGround ? 'land' : 'jump'; p.stateT = 0; p.stateDur = 150; }
 
     /* ---------- flat on your back ---------- */
     if (p.state === 'down') {
