@@ -26,49 +26,49 @@ const FONT_HAND = '"Bradley Hand","Segoe Print","Comic Sans MS",cursive';
 /* ---------------- WEAPONS ---------------- */
 const WEAPONS = [
   { id:'fists',   name:'Bare Hands',        cost:0,    dmg:9,  range:38, speed:1.00, kb:4,  shape:'none',   desc:'Two of them. Free.' },
-  { id:'pencil', special:'GRAFFITO',  name:'Pencil Shiv',       cost:95,  dmg:13, range:46, speed:1.05, kb:5,  shape:'pencil', desc:'Snapped in half, sharpened on the desk edge.' },
-  { id:'ruler', special:'STRAIGHT EDGE',   name:'Ruler Blade',       cost:270,  dmg:18, range:60, speed:0.94, kb:7,  shape:'ruler',  desc:'Thirty centimetres of unforgiving straight.' },
-  { id:'eraser', special:'BLANK SLATE',  name:'Eraser Maul',       cost:630,  dmg:31, range:50, speed:0.66, kb:16, shape:'maul',   desc:'Slow. Removes the problem entirely.' },
-  { id:'compass', special:'FULL CIRCLE', name:'Compass Spear',     cost:1150, dmg:21, range:82, speed:0.84, kb:8,  shape:'spear',  desc:'Keeps everyone at arm\u2019s length. Then some.' },
-  { id:'nibs', special:'CROSSHATCH',    name:'Twin Nibs',         cost:2150, dmg:12, range:44, speed:1.55, kb:3,  shape:'nibs',   desc:'Two fast hits where one used to go.' },
-  { id:'marker', special:'HIGHLIGHT REEL',  name:'Highlighter',       cost:3900, dmg:26, range:66, speed:1.10, kb:9,  shape:'marker', glow:C.ink, desc:'Marks what matters. Loudly.' },
-  { id:'stylus', special:'REVISION',  name:'Architect\u2019s Stylus', cost:7000, dmg:38, range:72, speed:1.18, kb:11, shape:'stylus', glow:C.purple, desc:'A prototype. It was never meant to leave the desk.' },
+  { id:'pencil', special:'GRAFFITO',  name:'Pencil Shiv',       cost:205,  dmg:13, range:46, speed:1.05, kb:5,  shape:'pencil', desc:'Snapped in half, sharpened on the desk edge.' },
+  { id:'ruler', special:'STRAIGHT EDGE',   name:'Ruler Blade',       cost:585,  dmg:18, range:60, speed:0.94, kb:7,  shape:'ruler',  desc:'Thirty centimetres of unforgiving straight.' },
+  { id:'eraser', special:'BLANK SLATE',  name:'Eraser Maul',       cost:1370,  dmg:31, range:50, speed:0.66, kb:16, shape:'maul',   desc:'Slow. Removes the problem entirely.' },
+  { id:'compass', special:'FULL CIRCLE', name:'Compass Spear',     cost:2500, dmg:21, range:82, speed:0.84, kb:8,  shape:'spear',  desc:'Keeps everyone at arm\u2019s length. Then some.' },
+  { id:'nibs', special:'CROSSHATCH',    name:'Twin Nibs',         cost:4670, dmg:12, range:44, speed:1.55, kb:3,  shape:'nibs',   desc:'Two fast hits where one used to go.' },
+  { id:'marker', special:'HIGHLIGHT REEL',  name:'Highlighter',       cost:8460, dmg:26, range:66, speed:1.10, kb:9,  shape:'marker', glow:C.ink, desc:'Marks what matters. Loudly.' },
+  { id:'stylus', special:'REVISION',  name:'Architect\u2019s Stylus', cost:15200, dmg:38, range:72, speed:1.18, kb:11, shape:'stylus', glow:C.purple, desc:'A prototype. It was never meant to leave the desk.' },
 ];
 
 /* ---------------- SKINS ---------------- */
 const SKINS = [
   { id:'graphite', name:'Graphite',      cost:0,    line:'#22201C', accent:'#5A554A', desc:'Standard 2B. How everyone starts.' },
-  { id:'roughs',   name:'Non-Photo Blue',cost:80,  line:'#4A7C93', accent:'#8EC5DC', desc:'The colour of a drawing not finished yet.' },
-  { id:'redpen',   name:'Editor\u2019s Red', cost:185, line:'#C4452F', accent:'#E88A72', desc:'Every line on you is a correction.' },
-  { id:'charcoal', name:'Charcoal',      cost:335,  line:'#0D0D0D', accent:'#4A4A4A', thick:1.4, desc:'Thick, smudged, hard to erase.' },
-  { id:'mint',     name:'Ditto Green',   cost:535, line:'#3F7A4A', accent:'#9BD3A4', desc:'Fresh off the copier, still warm.' },
-  { id:'gold',     name:'Gold Leaf',     cost:865, line:'#B8860B', accent:'#F2C94C', glow:true, desc:'Reserved for finished work.' },
-  { id:'violet',   name:'Duplicator',    cost:1330, line:'#6B4E9B', accent:'#B49BD6', glow:true, desc:'The Architect\u2019s own purple. Stolen.' },
-  { id:'ghost',    name:'Tracing Paper', cost:1865, line:'#7E7A70', accent:'#C9C3B4', ghost:true, desc:'You can see straight through. So can they.' },
+  { id:'roughs',   name:'Non-Photo Blue',cost:175,  line:'#4A7C93', accent:'#8EC5DC', desc:'The colour of a drawing not finished yet.' },
+  { id:'redpen',   name:'Editor\u2019s Red', cost:400, line:'#C4452F', accent:'#E88A72', desc:'Every line on you is a correction.' },
+  { id:'charcoal', name:'Charcoal',      cost:725,  line:'#0D0D0D', accent:'#4A4A4A', thick:1.4, desc:'Thick, smudged, hard to erase.' },
+  { id:'mint',     name:'Ditto Green',   cost:1160, line:'#3F7A4A', accent:'#9BD3A4', desc:'Fresh off the copier, still warm.' },
+  { id:'gold',     name:'Gold Leaf',     cost:1875, line:'#B8860B', accent:'#F2C94C', glow:true, desc:'Reserved for finished work.' },
+  { id:'violet',   name:'Duplicator',    cost:2885, line:'#6B4E9B', accent:'#B49BD6', glow:true, desc:'The Architect\u2019s own purple. Stolen.' },
+  { id:'ghost',    name:'Tracing Paper', cost:4045, line:'#7E7A70', accent:'#C9C3B4', ghost:true, desc:'You can see straight through. So can they.' },
 ];
 
 /* ---------------- CLOTHING ---------------- */
 const WEARS = [
   { id:'none',    name:'Nothing',        cost:0,    slot:'head', desc:'Bare line.' },
-  { id:'band',    name:'Headband',       cost:80,  slot:'head', perk:{ speed:0.04 },  desc:'Keeps the graphite out of your eyes. +4% move speed.' },
-  { id:'cap',     name:'Backwards Cap',  cost:215,  slot:'head', perk:{ atkSpeed:0.04 },desc:'+4% attack speed. Purely psychological.' },
-  { id:'antenna', name:'Antenna',        cost:400,  slot:'head', perk:{ ink:0.05 },    desc:'Picks up loose signal. +5% shards earned.' },
-  { id:'tophat',  name:'Top Hat',        cost:635, slot:'head', perk:{ hp:10 },       desc:'+10 max health. Dignity is armour.' },
-  { id:'crown',   name:'Paper Crown',    cost:1265, slot:'head', perk:{ ink:0.10 },    desc:'+10% shards earned. Folded from a losing draft.' },
-  { id:'cape',    name:'Draft Cape',     cost:465,  slot:'back', perk:{ speed:0.06 },  desc:'+6% move speed. It catches the air from the fan.' },
-  { id:'wings',   name:'Sketch Wings',   cost:1465, slot:'back', perk:{ speed:0.05, dash:1 }, desc:'+5% speed and one extra dash charge.' },
-  { id:'scarf',   name:'Long Scarf',     cost:800, slot:'back', perk:{ hp:15 },       desc:'+15 max health. Mostly for the trailing.' },
+  { id:'band',    name:'Headband',       cost:175,  slot:'head', perk:{ speed:0.04 },  desc:'Keeps the graphite out of your eyes. +4% move speed.' },
+  { id:'cap',     name:'Backwards Cap',  cost:465,  slot:'head', perk:{ atkSpeed:0.04 },desc:'+4% attack speed. Purely psychological.' },
+  { id:'antenna', name:'Antenna',        cost:870,  slot:'head', perk:{ ink:0.05 },    desc:'Picks up loose signal. +5% shards earned.' },
+  { id:'tophat',  name:'Top Hat',        cost:1380, slot:'head', perk:{ hp:10 },       desc:'+10 max health. Dignity is armour.' },
+  { id:'crown',   name:'Paper Crown',    cost:2745, slot:'head', perk:{ ink:0.10 },    desc:'+10% shards earned. Folded from a losing draft.' },
+  { id:'cape',    name:'Draft Cape',     cost:1010,  slot:'back', perk:{ speed:0.06 },  desc:'+6% move speed. It catches the air from the fan.' },
+  { id:'wings',   name:'Sketch Wings',   cost:3180, slot:'back', perk:{ speed:0.05, dash:1 }, desc:'+5% speed and one extra dash charge.' },
+  { id:'scarf',   name:'Long Scarf',     cost:1735, slot:'back', perk:{ hp:15 },       desc:'+15 max health. Mostly for the trailing.' },
   { id:'nothingb',name:'No Back',        cost:0,    slot:'back', desc:'Nothing behind you.' },
 ];
 
 /* ---------------- UPGRADES (the compounding loop) ---------------- */
 const UPGRADES = [
-  { id:'vit',  name:'Vitality',  max:8,  base:78, mult:1.46, per:'+14 max health',      icon:'\u2665' },
-  { id:'pow',  name:'Power',     max:10, base:93, mult:1.48, per:'+8% damage',          icon:'\u2694' },
-  { id:'swift',name:'Swiftness', max:8,  base:104, mult:1.5, per:'+5% move speed',      icon:'\u21C9' },
-  { id:'fero', name:'Ferocity',  max:8,  base:115, mult:1.5, per:'+6% attack speed',    icon:'\u26A1' },
-  { id:'wind', name:'Second Wind',max:4, base:333, mult:1.78, per:'+1 dash charge',      icon:'\u21BB' },
-  { id:'fort', name:'Fortune',   max:8,  base:170, mult:1.52, per:'+9% shards from levels', icon:'\u2726' },
+  { id:'vit',  name:'Vitality',  max:8,  base:170, mult:1.46, per:'+14 max health',      icon:'\u2665' },
+  { id:'pow',  name:'Power',     max:10, base:202, mult:1.48, per:'+8% damage',          icon:'\u2694' },
+  { id:'swift',name:'Swiftness', max:8,  base:226, mult:1.5, per:'+5% move speed',      icon:'\u21C9' },
+  { id:'fero', name:'Ferocity',  max:8,  base:250, mult:1.5, per:'+6% attack speed',    icon:'\u26A1' },
+  { id:'wind', name:'Second Wind',max:4, base:723, mult:1.78, per:'+1 dash charge',      icon:'\u21BB' },
+  { id:'fort', name:'Fortune',   max:8,  base:369, mult:1.52, per:'+9% shards from levels', icon:'\u2726' },
 ];
 const upCost = (u, lvl) => Math.round(u.base * Math.pow(u.mult, lvl));
 
@@ -79,19 +79,19 @@ const SPECIALS = [
   { id:'inkburst', name:'INK BURST', cost:0, kind:'nova', dmg:1.60, pulses:3, radius:210,
     desc:'Three shockwaves straight out from where you stand.',
     note:'Yours from the start. Reliable, no thinking required.' },
-  { id:'crosshatch', name:'CROSSHATCH', cost:2400, kind:'cone', dmg:1.35, pulses:5, radius:230,
+  { id:'crosshatch', name:'CROSSHATCH', cost:5200, kind:'cone', dmg:1.35, pulses:5, radius:230,
     desc:'Five slashes carved forward in a wedge. Nothing behind you.',
     note:'More total damage than Ink Burst, but only in front.' },
-  { id:'flipbook', name:'FLIPBOOK', cost:5200, kind:'flurry', dmg:0.62, pulses:9, radius:170,
+  { id:'flipbook', name:'FLIPBOOK', cost:11300, kind:'flurry', dmg:0.62, pulses:9, radius:170,
     desc:'Nine hits in under a second, everything close in.',
     note:'Shreds crowds. Feeds your combo counter hard.' },
-  { id:'blotstorm', name:'BLOT STORM', cost:9600, kind:'rain', dmg:1.05, pulses:12, radius:420,
+  { id:'blotstorm', name:'BLOT STORM', cost:20800, kind:'rain', dmg:1.05, pulses:12, radius:420,
     desc:'Ink falls across the whole width of the page.',
     note:'Reaches things you cannot. Slow to finish.' },
-  { id:'vanishing', name:'VANISHING POINT', cost:15500, kind:'blink', dmg:3.40, pulses:2, radius:190,
+  { id:'vanishing', name:'VANISHING POINT', cost:33600, kind:'blink', dmg:3.40, pulses:2, radius:190,
     desc:'You are somewhere else, then it is over.',
     note:'Steps you behind the furthest enemy and detonates twice.' },
-  { id:'revision', name:'REVISION', cost:25000, kind:'heal', dmg:2.40, pulses:3, radius:250,
+  { id:'revision', name:'REVISION', cost:54000, kind:'heal', dmg:2.40, pulses:3, radius:250,
     desc:'Rubs out the page around you and redraws you whole.',
     note:'Heals 30% of your health as well as clearing the room.' },
 ];
@@ -100,12 +100,13 @@ const specOf = (s) => SPECIALS.find(x => x.id === s.special) || SPECIALS[0];
 /* Planned shard packs. Nothing here is connected to a payment processor and
    the buttons are inert; the table exists so the pricing can be reviewed. */
 const SHARD_PACKS = [
-  { id:'pocket',  name:'A Pocketful',      ink:4000,   bonus:0,  price:'$1.99',  note:'A weapon, or a couple of upgrade levels.' },
-  { id:'well',    name:'The Inkwell',      ink:13000,  bonus:20, price:'$4.99',  note:'About a third of the way to a top power move.' },
-  { id:'res',     name:'The Reservoir',    ink:30000,  bonus:32, price:'$9.99',  note:'A strong loadout in one go.' },
-  { id:'flood',   name:'The Flood',        ink:70000,  bonus:45, price:'$19.99', note:'Most of the power move ladder.' },
-  { id:'bottle',  name:'The Whole Bottle', ink:190000, bonus:62, price:'$49.99', note:'Everything in the Armoury, with change.' },
+  { id:'pocket',  name:'A Pocketful',      ink:9000,   bonus:0,  price:'$1.99',  note:'A weapon, or a couple of upgrade levels.' },
+  { id:'well',    name:'The Inkwell',      ink:28000,  bonus:20, price:'$4.99',  note:'About a third of the way to a top power move.' },
+  { id:'res',     name:'The Reservoir',    ink:65000,  bonus:32, price:'$9.99',  note:'A strong loadout in one go.' },
+  { id:'flood',   name:'The Flood',        ink:150000, bonus:45, price:'$19.99', note:'Most of the power move ladder.' },
+  { id:'bottle',  name:'The Whole Bottle', ink:410000, bonus:62, price:'$49.99', note:'Everything in the Armoury, with change.' },
 ];
+
 
 
 /* ---------------- CHAPTERS + LEVELS ---------------- */
@@ -123,40 +124,88 @@ const mk = (id, ch, name, kind, waves, gold, ink, story) =>
 
 const LEVELS = [
   mk(1,1,'First Line','fight',[['scribbler',3]],8,150,
-    'You wake up as four lines and a circle. Someone drew you in the margin and then stopped paying attention.\n\nThere is scribbling nearby. It is coming toward you.\n\nThe scribbling here is all loops, and cutting across a loop only pulls the knot tighter. The ones that come apart are the ones something lifted off the page first.'),
-  mk(2,1,'Crossed Out','fight',[['scribbler',3],['scribbler',4]],16,200,
-    'A voice from somewhere above the page: "Rough. Keep going."\n\nYou keep going.\n\nYou pass a ball of crossed-out lines twitching in the gutter. It holds together fine until a draught gets under it, and then it just unwinds.'),
-  mk(3,1,'SCRIBBLE','boss',[['scribbler',3],['scribbler',4],['boss','scribble']],28,540,
+    'You wake up as four lines and a circle. Someone drew you in the margin and then stopped paying attention.\n\nThere is scribbling nearby. It is coming toward you.'),
+  mk(2,1,'Crossed Out','fight',[['scribbler',3],['scribbler',4]],11,188,
+    'A voice from somewhere above the page: "Rough. Keep going."\n\nYou keep going.'),
+  mk(3,1,'Rough Pass','fight',[['scribbler',4],['scribbler',4]],14,226,
+    'The margin widens. Somebody was practising here — the same shape over and over, each one abandoned halfway.\n\nNone of them got legs. You did.'),
+  mk(4,1,'Loose Ends','fight',[['scribbler',5],['scribbler',4]],18,264,
+    'Lines that go nowhere. They start with intent and give up two inches later.\n\nOne of them notices you walking past on finished feet and follows you for a while, trailing off.'),
+  mk(5,1,'Overworked','fight',[['scribbler',4],['scribbler',3],['scribbler',3],['scribbler',3]],21,302,
+    'Too many passes over the same spot. The paper here has gone soft and grey and it tears if you stand still.\n\nYou keep moving.\n\nThe scribbling here is all loops, and cutting across a loop only pulls the knot tighter. The ones that come apart are the ones something lifted off the page first.'),
+  mk(6,1,'The Knot','fight',[['scribbler',4],['scribbler',4],['scribbler',3],['scribbler',3]],24,340,
+    'Ahead the loops stop being separate things and start being one thing.\n\nYou pass a ball of crossed-out lines twitching in the gutter. It holds together fine until a draught gets under it, and then it just unwinds.'),
+  mk(7,1,'SCRIBBLE','boss',[['scribbler',3],['scribbler',4],['boss','scribble']],28,540,
     'It is what happens to a drawing when the hand gets angry. Every wrong line the Architect ever made, balled up and left alive in the margin.\n\nIt does not want anything. That is what makes it hard.'),
-  mk(4,2,'White Noise','fight',[['dasher',3],['scribbler',3],['dasher',3]],18,300,
-    'Past the margin, the page goes pale. Whole shapes stand around with their outlines missing, waiting to be finished. They will not be.\n\nOne of them notices you still have all of yours.\n\nA half-finished shape watches you swing at a smear and pass clean through it. \u201CNo edge on those,\u201D it says. \u201CYou can\u2019t cut a puddle. You have to get above it and put your weight through it.\u201D'),
-  mk(5,2,'Half-Erased','fight',[['scribbler',4],['lobber',2],['dasher',4]],18,360,
-    'A stick figure with no legs drags itself out of your way. "He erases the ones who ask questions," it says. "Ask fewer."\n\nYou ask which way.\n\nYou corner something grey against the margin and hit it flat from the side four times for nothing. Then you jump, come down on it, and it makes a sound like a wet page tearing.'),
-  mk(6,2,'SMUDGE','boss',[['dasher',3],['scribbler',4],['brute',2],['boss','smudge']],52,840,
+  mk(8,2,'White Noise','fight',[['dasher',3],['scribbler',3],['dasher',3]],18,300,
+    'Past the margin, the page goes pale. Whole shapes stand around with their outlines missing, waiting to be finished. They will not be.\n\nOne of them notices you still have all of yours.'),
+  mk(9,2,'Half-Erased','fight',[['scribbler',4],['lobber',2],['dasher',4]],20,348,
+    'A stick figure with no legs drags itself out of your way. "He erases the ones who ask questions," it says. "Ask fewer."\n\nYou ask which way.'),
+  mk(10,2,'Ghost Lines','fight',[['dasher',5],['scribbler',5],['scribbler',3]],23,396,
+    'Everything here was drawn and then taken back. What is left is the dent in the paper where it used to be.\n\nThe dents still move.'),
+  mk(11,2,'Rubbings','fight',[['dasher',5],['scribbler',5],['scribbler',4]],25,444,
+    'Pink crumbs everywhere, piled in drifts. Each one is a piece of somebody.\n\nYou try not to think about how many.'),
+  mk(12,2,'Pressure Marks','fight',[['dasher',4],['scribbler',4],['lobber',4],['dasher',3]],28,492,
+    'Someone pressed hard enough that the line went through to the next page. Whatever they drew is still down there, on the other side, keeping pace with you.\n\nA half-finished shape watches you swing at a smear and pass clean through it. “No edge on those,” it says. “You can’t cut a puddle. You have to get above it and put your weight through it.”'),
+  mk(13,2,'The Smear','fight',[['dasher',4],['scribbler',4],['lobber',4],['dasher',4]],30,540,
+    'The grey gets thicker. It has stopped being erased things and started being one erased thing.\n\nYou corner something grey against the margin and hit it flat from the side four times for nothing. Then you jump, come down on it, and it makes a sound like a wet page tearing.'),
+  mk(14,2,'SMUDGE','boss',[['dasher',3],['scribbler',4],['brute',2],['boss','smudge']],52,840,
     'The Architect\u2019s second mistake: he tried to rub out the first one. SMUDGE is what the rubbing became.\n\nIt has no edge to hit. You will have to find where it stops being blurry.'),
-  mk(7,3,'Ruled Lines','fight',[['brute',2],['scribbler',4],['lobber',2]],19,450,
-    'The Grid begins exactly where the Eraser Fields end, on a line you could measure. Everything stands at right angles. Everything is waiting for permission.\n\nYou are the only curve here.\n\nEverything here is measured down from a line at the top of the page. You duck under a ruled beam and notice the measuring simply stops \u2014 below the baseline nothing is marked at all.'),
-  mk(8,3,'Right Angles','fight',[['dasher',4],['brute',2],['lobber',3]],20,510,
-    'They march in squares. They turn in ninety degrees. A guard stops you and asks for your reference number.\n\nYou tell it your name instead.\n\nA lobber tells you the ruled things only see what they can measure. \u201CThey have no number for your ankles,\u201D it says, and goes back to throwing.'),
-  mk(9,3,'THE STRAIGHTEDGE','boss',[['lobber',3],['brute',2],['dasher',4],['boss','straightedge']],56,1280,
+  mk(15,3,'Ruled Lines','fight',[['brute',2],['scribbler',4],['lobber',2]],19,450,
+    'The Grid begins exactly where the Eraser Fields end, on a line you could measure. Everything stands at right angles. Everything is waiting for permission.\n\nYou are the only curve here.'),
+  mk(16,3,'Right Angles','fight',[['dasher',4],['brute',2],['lobber',3]],22,516,
+    'They march in squares. They turn in ninety degrees. A guard stops you and asks for your reference number.\n\nYou tell it your name instead.'),
+  mk(17,3,'Set Square','fight',[['brute',5],['lobber',5]],24,582,
+    'Everything is measured from the top. You are the only object here without a stated width.\n\nThe grid does not like that, and the grid has opinions.'),
+  mk(18,3,'Perspective','fight',[['brute',5],['lobber',5],['lobber',3]],27,648,
+    'The lines all lean toward one point on the horizon. Stand in the wrong place and you get smaller.\n\nStand in the right place and you get very large indeed. Briefly.'),
+  mk(19,3,'Vanishing Lines','fight',[['brute',4],['lobber',3],['dasher',4],['brute',3]],29,714,
+    'The rules converge ahead of you and something is standing exactly where they meet.\n\nEverything here is measured down from a line at the top of the page. You duck under a ruled beam and notice the measuring simply stops — below the baseline nothing is marked at all.'),
+  mk(20,3,'True Edge','fight',[['brute',4],['lobber',4],['dasher',4],['brute',3]],32,780,
+    'The last stretch before the ruler itself. Every angle is exact and none of them are on your side.\n\nA lobber tells you the ruled things only see what they can measure. “They have no number for your ankles,” it says, and goes back to throwing.'),
+  mk(21,3,'THE STRAIGHTEDGE','boss',[['lobber',3],['brute',2],['dasher',4],['boss','straightedge']],56,1280,
     'It was drawn to keep the world tidy and it has never once been wrong, because it decides what wrong means.\n\nIt has read your file. It is disappointed.'),
-  mk(10,4,'Wet Paint','fight',[['lobber',3],['dasher',4],['brute',2]],21,590,
-    'Colour gets out of the tray and nothing behaves. The ground is tacky. Shapes bleed into each other and come apart wrong.\n\nSomething red is having a very good time up ahead.\n\nThe colours here arrive as throws. Take one on the guard at the moment it lands and it stains you the same shade, and for a breath the thing that threw it cannot tell where it stops and you start.'),
-  mk(11,4,'Running Colours','fight',[['brute',2],['copy',2],['lobber',3],['dasher',3]],22,690,
-    'The Architect keeps his failures separated by hue so they cannot mix and organise.\n\nYou walk through the dividing line. They mix.\n\nYou watch a swatch batter itself against its own reflection in a puddle of thinner, unable to work out which one to hit.'),
-  mk(12,4,'CHROMA','boss',[['dasher',4],['lobber',3],['brute',3],['boss','chroma']],78,1860,
+  mk(22,4,'Wet Paint','fight',[['lobber',3],['dasher',4],['brute',2]],21,590,
+    'Colour gets out of the tray and nothing behaves. The ground is tacky. Shapes bleed into each other and come apart wrong.\n\nSomething red is having a very good time up ahead.'),
+  mk(23,4,'Running Colours','fight',[['brute',2],['copy',2],['lobber',3],['dasher',3]],24,680,
+    'The Architect keeps his failures separated by hue so they cannot mix and organise.\n\nYou walk through the dividing line. They mix.'),
+  mk(24,4,'Bleed','fight',[['lobber',5],['dasher',5],['dasher',3]],26,770,
+    'The colours have got out of the tray and into the paper. Everything runs.\n\nStand in one place too long and you start to run with it.'),
+  mk(25,4,'Undercoat','fight',[['lobber',5],['dasher',5],['dasher',4]],29,860,
+    'Beneath the loud layer there is a duller one that was meant to stay hidden.\n\nIt resents being walked on by something in ink.'),
+  mk(26,4,'Colour Wash','fight',[['lobber',4],['dasher',4],['brute',4],['copy',3]],31,950,
+    'A flat wash across the whole page, and shapes moving under it like fish.\n\nThe colours here arrive as throws. Take one on the guard at the moment it lands and it stains you the same shade, and for a breath the thing that threw it cannot tell where it stops and you start.'),
+  mk(27,4,'Saturation','fight',[['lobber',4],['dasher',4],['brute',4],['copy',4]],34,1040,
+    'Too much of everything. The page cannot hold any more pigment and it is starting to buckle.\n\nYou watch a swatch batter itself against its own reflection in a puddle of thinner, unable to work out which one to hit.'),
+  mk(28,4,'CHROMA','boss',[['dasher',4],['lobber',3],['brute',3],['boss','chroma']],78,1860,
     'Four moods in one body, and it changes which one it is whenever it gets bored.\n\nRead the colour. The colour is the only warning you get.'),
-  mk(13,5,'Rough Sketch','fight',[['copy',2],['brute',2],['dasher',4],['scribbler',4]],26,780,
-    'The Draft is a drawer. Every version of everything that got thrown out is still in here, still moving.\n\nYou see three of yourself before you stop counting.\n\nThe drafts in this drawer have been rehearsing. One is working through a routine of your own moves \u2014 every one you have ever thrown, in order, and nothing else. It has no answer for anything it has not been shown.'),
-  mk(14,5,'Tracing Paper','fight',[['copy',3],['lobber',3],['brute',3],['copy',2]],26,930,
-    'They copy your stance. Your weapon. The way you favour one side when you\u2019re tired.\n\nThe only thing they cannot copy is that you chose to come here.\n\nA copy mirrors you for a while and does it well, right up until you do something new. Then it stands there with its hands up, waiting for a page that was never drawn.'),
-  mk(15,5,'THE UNDERSTUDY','boss',[['copy',2],['brute',3],['dasher',4],['boss','understudy']],62,2700,
+  mk(29,5,'Rough Sketch','fight',[['copy',2],['brute',2],['dasher',4],['scribbler',4]],26,780,
+    'The Draft is a drawer. Every version of everything that got thrown out is still in here, still moving.\n\nYou see three of yourself before you stop counting.'),
+  mk(30,5,'Tracing Paper','fight',[['copy',4],['lobber',3],['brute',3],['copy',3]],28,904,
+    'They copy your stance. Your weapon. The way you favour one side when you\u2019re tired.\n\nThe only thing they cannot copy is that you chose to come here.'),
+  mk(31,5,'Second Pass','fight',[['copy',5],['brute',5],['brute',4]],31,1028,
+    'Version two of a drawing you have not seen version one of. It is better than you in three specific ways and it knows which three.\n\nYou find out the hard way.'),
+  mk(32,5,'Redlines','fight',[['copy',5],['brute',5],['brute',5]],33,1152,
+    'Corrections in a hand that is not the Architect’s. Someone else was here, marking his work.\n\nWhatever they suggested, he did not take it well.'),
+  mk(33,5,'Version Seven','fight',[['copy',4],['brute',4],['dasher',4],['scribbler',4]],36,1276,
+    'Seven of you, stacked in a drawer. Six were wrong. Nobody wrote down why.\n\nThe drafts in this drawer have been rehearsing. One is working through a routine of your own moves — every one you have ever thrown, in order, and nothing else. It has no answer for anything it has not been shown.'),
+  mk(34,5,'The Understudies','fight',[['copy',5],['brute',4],['dasher',4],['scribbler',4]],38,1400,
+    'They have been waiting a long time to be needed.\n\nA copy mirrors you for a while and does it well, right up until you do something new. Then it stands there with its hands up, waiting for a page that was never drawn.'),
+  mk(35,5,'THE UNDERSTUDY','boss',[['copy',2],['brute',3],['dasher',4],['boss','understudy']],62,2700,
     'Version one. Drawn before you, with the same hand, on a better morning \u2014 and then set aside for reasons never written down.\n\nIt has been practising for this the entire time you were alive.'),
-  mk(16,6,'The Gutter','fight',[['brute',3],['copy',3],['dasher',4],['lobber',4]],22,1030,
-    'The seam where two pages meet. The lamp is close enough now to feel warm.\n\nEverything he has left throws itself into the gap.\n\nThe pen passes overhead and everything it is not touching goes soft. He can draw or he can rub out, you realise. He has never once done both.'),
-  mk(17,6,'Last Margin','fight',[['copy',4],['brute',4],['dasher',5],['lobber',4]],25,1220,
-    'One strip of blank between you and him. It is the same margin you woke up in, at the other end of the page.\n\nThe hand above stops moving. It has seen you.\n\nYou wait out a long stroke pressed flat against the margin. While the pen is moving nothing else on the page is being held together \u2014 including, you suspect, him.'),
-  mk(18,6,'THE ARCHITECT','boss',[['brute',3],['copy',3],['lobber',4],['dasher',4],['boss','architect']],124,4860,
+  mk(36,6,'The Gutter','fight',[['brute',3],['copy',3],['dasher',4],['lobber',4]],22,1030,
+    'The seam where two pages meet. The lamp is close enough now to feel warm.\n\nEverything he has left throws itself into the gap.'),
+  mk(37,6,'Last Margin','fight',[['copy',4],['brute',4],['dasher',5],['lobber',4]],26,1196,
+    'One strip of blank between you and him. It is the same margin you woke up in, at the other end of the page.\n\nThe hand above stops moving. It has seen you.'),
+  mk(38,6,'Deadline','fight',[['brute',5],['copy',5],['copy',5],['copy',3]],29,1362,
+    'A hard black line across the page with nothing drawn past it.\n\nEverything that lives on this side has worked out that it is running out of room.'),
+  mk(39,6,'The Last Ream','fight',[['brute',5],['copy',5],['copy',5],['copy',4]],33,1528,
+    'Paper stacked to the ceiling, all of it blank, all of it already spoken for.\n\nThe pen passes overhead and everything it is not touching goes soft. He can draw or he can rub out, you realise. He has never once done both.'),
+  mk(40,6,'Bleed Edge','fight',[['brute',5],['copy',5],['lobber',5],['dasher',5]],36,1694,
+    'Past this the ink runs off and does not come back.\n\nYou wait out a long stroke pressed flat against the margin. While the pen is moving nothing else on the page is being held together — including, you suspect, him.'),
+  mk(41,6,'The Signature','fight',[['brute',5],['copy',5],['lobber',5],['dasher',5],['dasher',3]],40,1860,
+    'He signs every page. It is the only part of him that is always the same.\n\nThe last of them stand between you and it, and they know what happens to a drawing after the signature goes on.\n\nOne of them has been counting. \u201cWatch the pen, not him,\u201d it says. \u201cWhile it is moving he is doing one thing and one thing only. He has never once been able to do both at the same time.\u201d'),
+  mk(42,6,'THE ARCHITECT','boss',[['brute',3],['copy',3],['lobber',4],['dasher',4],['boss','architect']],124,4860,
     'He is not larger than you. That is the first surprise.\n\nHe holds the pen the way you hold your weapon, and he says, without much interest: "You were a warm-up. I do this every morning."'),
 ];
 
@@ -170,6 +219,17 @@ const CH_END = {
 };
 
 const chapterLevels = (ch) => LEVELS.filter(l => l.ch === ch);
+
+/* Everything about how you are currently drawn, in one place. */
+function lookOf(save) {
+  const sk = SKINS.find(x => x.id === save.skin) || SKINS[0];
+  return {
+    line: sk.line, accent: sk.accent, thick: sk.thick,
+    glow: sk.glow ? sk.accent : null, ghost: sk.ghost,
+    head: save.head, back: save.back,
+    wp: WEAPONS.find(w => w.id === save.weapon) || WEAPONS[0],
+  };
+}
 
 /* ---------------- ENEMIES ---------------- */
 /* every move has its own impact */
@@ -327,12 +387,12 @@ const freshSave = (name) => ({
   weapon:'fists', skin:'graphite', head:'none', back:'nothingb', special:'inkburst',
   ownedW:['fists'], ownedS:['graphite'], ownedC:['none','nothingb'], ownedSp:['inkburst'],
   ups:{ vit:0, pow:0, swift:0, fero:0, wind:0, fort:0 },
-  seenStory:{}, muted:false, music:true, created:Date.now(),
+  seenStory:{}, muted:false, music:true, campaign:2, created:Date.now(),
 });
 
 /* Bump VERSION on every deploy so testers can tell you which build they are on.
    It is shown at the bottom of Settings. */
-const VERSION = '2.2.0';
+const VERSION = '3.0.0';
 
 /* Old saves are merged onto a fresh one, so adding a new upgrade, wearable or
    save field in a later build never leaves an existing player with undefined
@@ -355,6 +415,24 @@ function migrateSave(raw) {
   if (!out.ownedC.includes(out.head)) out.head = 'none';
   if (!out.ownedC.includes(out.back)) out.back = 'nothingb';
   if (!SPECIALS.some(x => x.id === out.special) || !out.ownedSp.includes(out.special)) out.special = 'inkburst';
+
+  /* The campaign went from eighteen levels to forty-two, and the numbers
+     moved: what used to be level 3 is now level 7. Anyone with an older
+     save gets their clears and times carried across to where those levels
+     actually live now, rather than having them land on the wrong ones. */
+  if (!raw.campaign) {
+    const MOVED = { 1:1, 2:2, 3:7, 4:8, 5:9, 6:14, 7:15, 8:16, 9:21, 10:22, 11:23,
+                    12:28, 13:29, 14:30, 15:35, 16:36, 17:37, 18:42 };
+    const cl = {}, bs = {};
+    Object.keys(out.cleared || {}).forEach(k => { const n = MOVED[+k]; if (n) cl[n] = out.cleared[k]; });
+    Object.keys(out.best || {}).forEach(k => { const n = MOVED[+k]; if (n) bs[n] = out.best[k]; });
+    out.cleared = cl; out.best = bs;
+    /* They keep everything they had already unlocked. The new levels
+       slotted in between are open too, and simply unplayed. */
+    const done = Object.keys(cl).map(Number);
+    out.level = done.length ? Math.min(LEVELS.length + 1, Math.max(...done) + 1) : 1;
+    out.campaign = 2;
+  }
   out.ink = Math.max(0, Number(out.ink) || 0);
   out.level = clamp(Math.round(Number(out.level) || 1), 1, LEVELS.length);
   return out;
@@ -3450,9 +3528,187 @@ function Node({ lv, save, onPick }) {
   );
 }
 
-function MapScreen({ save, board, onPick, onShop, onBoard, onSettings }) {
+const TRAIL_W = 360;          // the strip the path is laid out inside
+const STOP_GAP = 118;         // vertical distance between stops
+
+/* Where each level sits. The path snakes so consecutive stops are never
+   in a straight line, which is what makes it read as a journey. */
+function trailPoints(levels) {
+  const pts = [];
+  const inset = 58;
+  levels.forEach((lv, i) => {
+    /* a slow S down the page: the stops swing left and right so no three
+       in a row line up, which is what makes it read as a route */
+    const swing = 0.5 + 0.46 * Math.sin(i * 0.92 + 0.6);
+    const wob = Math.sin(i * 2.7) * 9;
+    pts.push({
+      lv,
+      x: inset + swing * (TRAIL_W - inset * 2) + wob,
+      y: 62 + i * STOP_GAP,
+    });
+  });
+  return pts;
+}
+
+/* A smooth path through the stops, so the dots follow a curve not a zigzag. */
+function trailPath(pts) {
+  if (!pts.length) return '';
+  let d = `M${pts[0].x} ${pts[0].y}`;
+  for (let i = 1; i < pts.length; i++) {
+    const a = pts[i - 1], b = pts[i];
+    const my = (a.y + b.y) / 2;
+    d += ` C ${a.x} ${my}, ${b.x} ${my}, ${b.x} ${b.y}`;
+  }
+  return d;
+}
+
+/* The scenery either side of the path. Deterministic from the index so it
+   does not reshuffle every render. */
+function Scenery({ n, h }) {
+  const bits = [];
+  for (let i = 0; i < n; i++) {
+    const r = (k) => {
+      const v = Math.sin(i * 12.9898 + k * 78.233) * 43758.5453;
+      return v - Math.floor(v);
+    };
+    const left = r(1) < 0.5;
+    const x = left ? 4 + r(2) * 44 : TRAIL_W - 52 + r(2) * 44;
+    const y = 40 + (i / n) * (h - 80) + r(3) * 40;
+    const kind = Math.floor(r(4) * 4);
+    const s = 0.75 + r(5) * 0.75;
+    const col = ['#4E7C51', '#69976C', '#8FB47F', '#C2A24E', '#B05A8A', '#7BA47E'][Math.floor(r(6) * 6)];
+    bits.push(
+      <g key={i} transform={`translate(${x} ${y}) scale(${s})`} opacity="0.8">
+        {kind === 0 && (<>
+          <path d="M0 0 L0 -14" stroke="#6B5A3A" strokeWidth="3" />
+          <circle cx="0" cy="-22" r="12" fill={col} />
+          <circle cx="-7" cy="-16" r="8" fill={col} opacity="0.85" />
+          <circle cx="8" cy="-17" r="7" fill={col} opacity="0.9" />
+        </>)}
+        {kind === 1 && (<>
+          <ellipse cx="0" cy="0" rx="18" ry="6" fill={col} opacity="0.55" />
+          <path d="M-8 0 q 3 -12 8 -14 q 5 2 8 14" fill="none" stroke={col} strokeWidth="2.5" />
+        </>)}
+        {kind === 2 && (<>
+          <path d="M-10 0 L0 -18 L10 0 Z" fill={col} />
+          <path d="M-6 0 L0 -11 L6 0 Z" fill="#EDE4CE" opacity="0.5" />
+        </>)}
+        {kind === 3 && (<>
+          <circle cx="0" cy="-4" r="5" fill="#F2C94C" opacity="0.9" />
+          <circle cx="0" cy="-4" r="2" fill="#C4452F" />
+          <path d="M0 1 L0 8" stroke="#5E8C61" strokeWidth="2" />
+        </>)}
+      </g>
+    );
+  }
+  return <g>{bits}</g>;
+}
+
+/* The little figure standing on the trail, in whatever you have on. */
+function TrailWalker({ x, y, face = 1, phase = 0, look }) {
+  const c = look.line || C.graphite;
+  const w = Math.sin(phase) * 0.9;
+  const bob = Math.abs(Math.cos(phase)) * 1.6;
+  return (
+    <g transform={`translate(${x} ${y - bob}) scale(${face} 1)`}>
+      {look.back === 'cape' && <path d="M0 -22 q -11 6 -8 18 l 12 -4 z" fill={look.accent || c} opacity="0.75" />}
+      {look.back === 'wings' && (<>
+        <path d="M-2 -22 q -14 -3 -17 9 q 9 3 16 -3 z" fill={look.accent || c} opacity="0.6" />
+        <path d="M2 -22 q 14 -3 17 9 q -9 3 -16 -3 z" fill={look.accent || c} opacity="0.6" />
+      </>)}
+      <g stroke={c} strokeWidth="2.6" fill="none" strokeLinecap="round">
+        <circle cx="0" cy="-27" r="4.6" />
+        <path d="M0 -22 L0 -10" />
+        <path d={`M0 -19 L ${-6 - w * 4} ${-12 + w * 2}`} />
+        <path d={`M0 -19 L ${6 - w * 4} ${-12 - w * 2}`} />
+        <path d={`M0 -10 L ${-5 - w * 5} 0`} />
+        <path d={`M0 -10 L ${5 - w * 5} 0`} />
+      </g>
+      {look.head === 'cap' && <path d="M-5 -30 q 5 -4 10 0 l 4 1 l -14 1 z" fill={look.accent || c} />}
+      {look.head === 'crown' && <path d="M-5 -31 l 2 -5 l 3 3 l 3 -4 l 2 6 z" fill={C.ink} stroke={C.ink} strokeWidth="1" />}
+      {look.head === 'band' && <path d="M-5 -29 L5 -29" stroke={look.accent || C.red} strokeWidth="2.4" />}
+      {look.wp && look.wp.shape !== 'none' && (
+        <path d={`M${6 - w * 4} ${-12 - w * 2} l 7 -9`} stroke={look.accent || c} strokeWidth="2.6" strokeLinecap="round" />
+      )}
+    </g>
+  );
+}
+
+function TrailStop({ p, save, onPick }) {
+  const lv = p.lv;
+  const cleared = !!save.cleared[lv.id];
+  const unlocked = lv.id <= save.level;
+  const best = save.best[lv.id];
+  const medal = cleared && best ? medalFor(lv, best) : null;
+  const boss = lv.kind === 'boss';
+  const current = lv.id === save.level && !cleared;
+  const R = boss ? 34 : 26;
+  const ring = !unlocked ? '#B5AE9D' : boss ? C.red : CHAPTERS[lv.ch - 1].color;
+  const fill = !unlocked ? '#D8D2C2' : medal ? MEDAL[medal] : cleared ? C.paper2 : C.paper;
+
+  return (
+    <g transform={`translate(${p.x} ${p.y})`}
+      onClick={unlocked ? () => onPick(lv) : undefined}
+      style={{ cursor: unlocked ? 'pointer' : 'not-allowed' }}>
+      <ellipse cx="0" cy={R * 0.72} rx={R * 0.86} ry={R * 0.26} fill="rgba(34,32,28,0.18)" />
+      {current && <circle r={R + 9} fill="none" stroke={C.ink} strokeWidth="4" opacity="0.55" className="ib-pulse" />}
+      <circle r={R + 4} fill="#FFFDF6" opacity={unlocked ? 0.9 : 0.5} />
+      <circle r={R} fill={fill} stroke={ring} strokeWidth={boss ? 4.5 : 3.5} />
+      {boss && [0, 1, 2, 3, 4].map(i => {
+        const a = (i / 5) * Math.PI * 2 - Math.PI / 2;
+        return <circle key={i} cx={Math.cos(a) * (R + 9)} cy={Math.sin(a) * (R + 9)} r="3.2" fill={C.red} opacity="0.8" />;
+      })}
+      <text textAnchor="middle" dy={boss ? 9 : 7}
+        style={{ fontFamily: FONT_DISP, fontWeight: 900, fontSize: boss ? 25 : 21, fill: unlocked ? ring : '#8A8270' }}>
+        {unlocked ? lv.id : '\u2715'}
+      </text>
+      {medal && <circle cx={R * 0.72} cy={-R * 0.72} r="7" fill={MEDAL[medal]} stroke={C.graphite} strokeWidth="1.6" />}
+      <rect x={-((unlocked ? lv.name : '\u2014\u2014\u2014').length * 3.6 + 8)} y={R + 8}
+        width={(unlocked ? lv.name : '\u2014\u2014\u2014').length * 7.2 + 16} height="16" rx="8"
+        fill="#FFFDF6" opacity="0.85" />
+      <text textAnchor="middle" dy={R + 20}
+        style={{ fontFamily: FONT_DISP, fontWeight: 800, fontSize: 11, letterSpacing: '0.06em', fill: unlocked ? '#4A463E' : '#A9A292' }}>
+        {(unlocked ? lv.name : '\u2014\u2014\u2014').toUpperCase()}
+      </text>
+    </g>
+  );
+}
+
+function MapScreen({ save, board, onPick, onShop, onBoard, onSettings, walk, onWalkDone }) {
   const stats = statsOf(save);
   const reached = save.level;
+  const look = useMemo(() => lookOf(save), [save.skin, save.head, save.back, save.weapon]);
+
+  /* After a win the figure walks the gap from the level you just finished
+     to the next stop, wearing whatever you have on. */
+  const [walker, setWalker] = useState(null);
+  useEffect(() => {
+    if (!walk) { setWalker(null); return; }
+    const from = LEVELS.find(l => l.id === walk.from);
+    const to = LEVELS.find(l => l.id === walk.to);
+    if (!from || !to || from.ch !== to.ch) { if (onWalkDone) onWalkDone(); return; }
+    const pts = trailPoints(chapterLevels(from.ch));
+    const a2 = pts.find(q => q.lv.id === from.id), b2 = pts.find(q => q.lv.id === to.id);
+    if (!a2 || !b2) { if (onWalkDone) onWalkDone(); return; }
+    let raf = 0, t0 = 0;
+    const DUR = 1500;
+    const tick = (ts) => {
+      if (!t0) t0 = ts;
+      const u = clamp((ts - t0) / DUR, 0, 1);
+      const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;   // ease in and out
+      setWalker({
+        ch: from.ch,
+        x: a2.x + (b2.x - a2.x) * e,
+        y: a2.y + (b2.y - a2.y) * e - Math.sin(e * 3.14159) * 6,
+        face: b2.x >= a2.x ? 1 : -1,
+        phase: (ts - t0) / 90,
+      });
+      if (u < 1) raf = requestAnimationFrame(tick);
+      else { setWalker(null); if (onWalkDone) onWalkDone(); }
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [walk && walk.from, walk && walk.to]);
   const nextBuy = useMemo(() => {
     const opts = [];
     UPGRADES.forEach(u => { const l = save.ups[u.id]; if (l < u.max) opts.push({ label: `${u.name} ${l + 1}`, cost: upCost(u, l) }); });
@@ -3473,7 +3729,7 @@ function MapScreen({ save, board, onPick, onShop, onBoard, onSettings }) {
             <Label>Playing as</Label>
             <Head size={26}>{save.name}</Head>
             <div style={{ fontFamily: FONT_DATA, fontSize: 11, color: '#8A8270', marginTop: 2 }}>
-              {`${stats.wp.name.toUpperCase()} \u00B7 ${Object.values(save.ups).reduce((a, b) => a + b, 0)} UPGRADES \u00B7 ${Object.keys(save.cleared).length}/18 CLEARED`}
+              {`${stats.wp.name.toUpperCase()} \u00B7 ${Object.values(save.ups).reduce((a, b) => a + b, 0)} UPGRADES \u00B7 ${Object.keys(save.cleared).length}/${LEVELS.length} CLEARED`}
             </div>
           </div>
           <div style={{ textAlign: 'right' }}>
@@ -3498,25 +3754,50 @@ function MapScreen({ save, board, onPick, onShop, onBoard, onSettings }) {
         )}
       </Rough>
 
+      {/* the trail itself, chapter by chapter */}
       {CHAPTERS.map(ch => {
         const lvs = chapterLevels(ch.id);
         const open = lvs.some(l => l.id <= reached);
         const done = lvs.every(l => save.cleared[l.id]);
+        const pts = trailPoints(lvs);
+        const H = pts[pts.length - 1].y + 76;
         return (
-          <div key={ch.id} className="ib-rise" style={{ marginBottom: 22, opacity: open ? 1 : 0.5 }}>
-            <div style={{ display: 'flex', alignItems: 'baseline', gap: 12, marginBottom: 6, flexWrap: 'wrap' }}>
-              <div style={{ width: 34, height: 34, borderRadius: 4, background: open ? ch.color : '#C8C1B0', display: 'flex', alignItems: 'center', justifyContent: 'center', color: C.paper, fontFamily: FONT_DISP, fontWeight: 900, fontSize: 17 }}>{ch.id}</div>
-              <Head size={25} col={open ? ch.color : '#B5AE9D'}>{open ? ch.name : 'SEALED'}</Head>
-              {done && <Label col={C.green}>{'\u2713 CHAPTER CLEARED'}</Label>}
+          <div key={ch.id} className="ib-rise" style={{ marginBottom: 10, opacity: open ? 1 : 0.55 }}>
+            <div style={{
+              display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
+              background: open ? ch.color : '#C8C1B0', border: `3px solid ${C.graphite}`,
+              padding: '8px 14px', marginBottom: -8, position: 'relative', zIndex: 2,
+              boxShadow: '3px 3px 0 rgba(34,32,28,0.2)',
+            }}>
+              <div style={{ fontFamily: FONT_DISP, fontWeight: 900, fontSize: 15, color: 'rgba(255,255,255,0.75)' }}>{ch.id}</div>
+              <div style={{ fontFamily: FONT_DISP, fontWeight: 900, fontSize: 21, letterSpacing: '0.08em', color: C.paper }}>
+                {open ? ch.name : 'SEALED'}
+              </div>
+              <div style={{ marginLeft: 'auto', fontFamily: FONT_DATA, fontSize: 11, color: 'rgba(255,255,255,0.8)' }}>
+                {done ? 'CHAPTER CLEARED' : `${lvs.filter(l => save.cleared[l.id]).length}/${lvs.length}`}
+              </div>
             </div>
-            {open && <Hand size={15} col="#6A6355" style={{ marginBottom: 12, maxWidth: 680 }}>{ch.blurb}</Hand>}
-            <div style={{ position: 'relative', display: 'flex', gap: 4, alignItems: 'flex-start', flexWrap: 'wrap', paddingLeft: 4 }}>
-              {lvs.map((l, i) => (
-                <React.Fragment key={l.id}>
-                  {i > 0 && <div style={{ flex: '0 0 auto', width: 34, height: 3, marginTop: 27, borderTop: `3px dashed ${l.id <= reached ? ch.color : '#C8C1B0'}` }} />}
-                  <Node lv={l} save={save} onPick={onPick} />
-                </React.Fragment>
-              ))}
+
+            <div style={{ overflow: 'hidden', border: `3px solid ${C.graphite}`, background: '#E9F0DC' }}>
+              <svg viewBox={`0 0 ${TRAIL_W} ${H}`} style={{ display: 'block', width: '100%', height: 'auto' }}>
+                <defs>
+                  <linearGradient id={`grass${ch.id}`} x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="0%" stopColor="#DCE9C8" />
+                    <stop offset="100%" stopColor="#C3DCA8" />
+                  </linearGradient>
+                </defs>
+                <rect x="0" y="0" width={TRAIL_W} height={H} fill={`url(#grass${ch.id})`} />
+                <Scenery n={Math.round(H / 26)} h={H} />
+                {/* the path: a wide pale band with dashes down the middle */}
+                <path d={trailPath(pts)} fill="none" stroke="#FFFDF6" strokeWidth="26" strokeLinecap="round" opacity="0.92" />
+                <path d={trailPath(pts)} fill="none" stroke={ch.color} strokeWidth="26" strokeLinecap="round" opacity="0.16" />
+                <path d={trailPath(pts)} fill="none" stroke={C.graphite} strokeWidth="3" strokeLinecap="round"
+                  strokeDasharray="2 13" opacity="0.45" />
+                {pts.map(p => <TrailStop key={p.lv.id} p={p} save={save} onPick={onPick} />)}
+                {walker && walker.ch === ch.id && (
+                  <TrailWalker x={walker.x} y={walker.y} face={walker.face} phase={walker.phase} look={look} />
+                )}
+              </svg>
             </div>
           </div>
         );
@@ -4098,38 +4379,86 @@ const SC = {
         { rules: 1, margin: 1, items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard' }, { kind: 'scribble', x: 142, y: 98, col: '#9A9384' }], speed: [170, -28] }],
     2: [{ rules: 1, margin: 1, ground: true, items: [{ kind: 'hero', x: 60, y: 104, pose: 'look' }], spot: 1, id: 'l2' },
         { rules: 1, margin: 1, items: [{ kind: 'hero', x: 70, y: 104, pose: 'run' }, { kind: 'scribble', x: 156, y: 98, col: '#9A9384' }] }],
-    3: [{ rules: 1, items: [{ kind: 'scribble', x: 132, y: 100, s: 1.5, col: C.graphite }, { kind: 'hero', x: 44, y: 104, pose: 'guard' }] },
+    3: [{ rules: 1, margin: 1, items: [{ kind: 'scribble', x: 148, y: 98, col: '#9A9384' }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { rules: 1, margin: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    4: [{ rules: 1, margin: 1, items: [{ kind: 'scribble', x: 148, y: 98, col: '#9A9384' }, { kind: 'hero', x: 52, y: 104, pose: 'look' }] },
+         { rules: 1, margin: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'run' }], pit: [104, 138] }],
+    5: [{ rules: 1, margin: 1, items: [{ kind: 'scribble', x: 148, y: 98, col: '#9A9384' }, { kind: 'hero', x: 52, y: 104, pose: 'guard' }] },
+         { rules: 1, margin: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'stand' }], speed: [116, 44] }],
+    6: [{ rules: 1, margin: 1, items: [{ kind: 'scribble', x: 148, y: 98, col: '#9A9384' }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { rules: 1, margin: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    7: [{ rules: 1, items: [{ kind: 'scribble', x: 132, y: 100, s: 1.5, col: C.graphite }, { kind: 'hero', x: 44, y: 104, pose: 'guard' }] },
         { rules: 1, items: [{ kind: 'scribble', x: 128, y: 100, s: 1.5 }, { kind: 'hero', x: 48, y: 104, pose: 'swing' }], star: [96, 72] }],
-    4: [{ items: [{ kind: 'eraser', x: 140, y: 100, col: '#9A9384' }, { kind: 'hero', x: 54, y: 104, pose: 'stand' }], pit: [96, 126] },
+    8: [{ items: [{ kind: 'eraser', x: 140, y: 100, col: '#9A9384' }, { kind: 'hero', x: 54, y: 104, pose: 'stand' }], pit: [96, 126] },
         { items: [{ kind: 'hero', x: 64, y: 104, pose: 'up' }], pit: [96, 132] }],
-    5: [{ items: [{ kind: 'hero', x: 56, y: 104, pose: 'run' }, { kind: 'crumple', x: 148, y: 100, col: '#9A9384' }] },
+    9: [{ items: [{ kind: 'hero', x: 56, y: 104, pose: 'run' }, { kind: 'crumple', x: 148, y: 100, col: '#9A9384' }] },
         { items: [{ kind: 'smudge', x: 140, y: 96, col: '#8B8478', s: 0.8 }, { kind: 'hero', x: 52, y: 104, pose: 'guard' }] }],
-    6: [{ items: [{ kind: 'smudge', x: 134, y: 98, col: '#8B8478', s: 1.4 }, { kind: 'hero', x: 46, y: 104, pose: 'guard' }] },
+    10: [{ items: [{ kind: 'crumple', x: 152, y: 100, col: '#9A9384' }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    11: [{ items: [{ kind: 'eraser', x: 146, y: 100, col: '#9A9384' }, { kind: 'hero', x: 52, y: 104, pose: 'look' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'run' }], pit: [104, 138] }],
+    12: [{ items: [{ kind: 'smudge', x: 142, y: 96, col: '#8B8478', s: 0.9 }, { kind: 'hero', x: 52, y: 104, pose: 'guard' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'stand' }], speed: [116, 44] }],
+    13: [{ items: [{ kind: 'crumple', x: 152, y: 100, col: '#9A9384' }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    14: [{ items: [{ kind: 'smudge', x: 134, y: 98, col: '#8B8478', s: 1.4 }, { kind: 'hero', x: 46, y: 104, pose: 'guard' }] },
         { items: [{ kind: 'smudge', x: 130, y: 98, col: '#8B8478', s: 1.4 }, { kind: 'hero', x: 50, y: 104, pose: 'swing' }], star: [98, 74] }],
-    7: [{ grid: 1, items: [{ kind: 'hero', x: 56, y: 104, pose: 'run' }] },
+    15: [{ grid: 1, items: [{ kind: 'hero', x: 56, y: 104, pose: 'run' }] },
         { grid: 1, items: [{ kind: 'hero', x: 60, y: 104, pose: 'up' }], pit: [104, 136] }],
-    8: [{ grid: 1, items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard' }, { kind: 'ruler', x: 152, y: 100, s: 0.7, col: C.blueDk }] },
+    16: [{ grid: 1, items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard' }, { kind: 'ruler', x: 152, y: 100, s: 0.7, col: C.blueDk }] },
         { grid: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'swing' }], star: [110, 70] }],
-    9: [{ grid: 1, items: [{ kind: 'ruler', x: 140, y: 104, s: 1.25, col: C.blueDk }, { kind: 'hero', x: 46, y: 104, pose: 'stand' }] },
+    17: [{ grid: 1, items: [{ kind: 'ruler', x: 150, y: 100, s: 0.8, col: C.blueDk }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { grid: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    18: [{ grid: 1, items: [{ kind: 'ruler', x: 150, y: 100, s: 0.8, col: C.blueDk }, { kind: 'hero', x: 52, y: 104, pose: 'look' }] },
+         { grid: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'run' }], pit: [104, 138] }],
+    19: [{ grid: 1, items: [{ kind: 'ruler', x: 150, y: 100, s: 0.8, col: C.blueDk }, { kind: 'hero', x: 52, y: 104, pose: 'guard' }] },
+         { grid: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'stand' }], speed: [116, 44] }],
+    20: [{ grid: 1, items: [{ kind: 'ruler', x: 150, y: 100, s: 0.8, col: C.blueDk }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { grid: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    21: [{ grid: 1, items: [{ kind: 'ruler', x: 140, y: 104, s: 1.25, col: C.blueDk }, { kind: 'hero', x: 46, y: 104, pose: 'stand' }] },
         { grid: 1, items: [{ kind: 'ruler', x: 138, y: 104, s: 1.25, col: C.blueDk }, { kind: 'hero', x: 50, y: 104, pose: 'guard' }], speed: [96, 40] }],
-    10: [{ blobs: 1, items: [{ kind: 'hero', x: 52, y: 104, pose: 'look' }] },
+    22: [{ blobs: 1, items: [{ kind: 'hero', x: 52, y: 104, pose: 'look' }] },
          { blobs: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'run' }], pit: [110, 142] }],
-    11: [{ blobs: 1, items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard' }, { kind: 'chroma', x: 150, y: 98, s: 0.7 }] },
+    23: [{ blobs: 1, items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard' }, { kind: 'chroma', x: 150, y: 98, s: 0.7 }] },
          { blobs: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'swing' }], star: [116, 68] }],
-    12: [{ blobs: 1, items: [{ kind: 'chroma', x: 140, y: 100, s: 1.4 }, { kind: 'hero', x: 48, y: 104, pose: 'stand' }] },
+    24: [{ blobs: 1, items: [{ kind: 'chroma', x: 146, y: 98, s: 0.8 }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { blobs: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    25: [{ blobs: 1, items: [{ kind: 'chroma', x: 146, y: 98, s: 0.8 }, { kind: 'hero', x: 52, y: 104, pose: 'look' }] },
+         { blobs: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'run' }], pit: [104, 138] }],
+    26: [{ blobs: 1, items: [{ kind: 'chroma', x: 146, y: 98, s: 0.8 }, { kind: 'hero', x: 52, y: 104, pose: 'guard' }] },
+         { blobs: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'stand' }], speed: [116, 44] }],
+    27: [{ blobs: 1, items: [{ kind: 'chroma', x: 146, y: 98, s: 0.8 }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { blobs: 1, items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    28: [{ blobs: 1, items: [{ kind: 'chroma', x: 140, y: 100, s: 1.4 }, { kind: 'hero', x: 48, y: 104, pose: 'stand' }] },
          { blobs: 1, items: [{ kind: 'chroma', x: 136, y: 100, s: 1.4 }, { kind: 'hero', x: 52, y: 104, pose: 'guard' }], speed: [100, 44] }],
-    13: [{ items: [{ kind: 'crumple', x: 132, y: 100, col: '#8A8270' }, { kind: 'crumple', x: 166, y: 96, col: '#8A8270', s: 0.7 }, { kind: 'hero', x: 54, y: 104, pose: 'look' }] },
+    29: [{ items: [{ kind: 'crumple', x: 132, y: 100, col: '#8A8270' }, { kind: 'crumple', x: 166, y: 96, col: '#8A8270', s: 0.7 }, { kind: 'hero', x: 54, y: 104, pose: 'look' }] },
          { items: [{ kind: 'copy', x: 146, y: 104, col: '#7A6A55' }, { kind: 'hero', x: 56, y: 104, pose: 'guard' }] }],
-    14: [{ items: [{ kind: 'copy', x: 140, y: 104, col: '#7A6A55' }, { kind: 'copy', x: 168, y: 104, col: '#7A6A55', s: 0.85 }, { kind: 'hero', x: 50, y: 104, pose: 'guard' }] },
+    30: [{ items: [{ kind: 'copy', x: 140, y: 104, col: '#7A6A55' }, { kind: 'copy', x: 168, y: 104, col: '#7A6A55', s: 0.85 }, { kind: 'hero', x: 50, y: 104, pose: 'guard' }] },
          { items: [{ kind: 'drawer', x: 144, y: 100 }, { kind: 'hero', x: 52, y: 104, pose: 'stand' }] }],
-    15: [{ items: [{ kind: 'copy', x: 140, y: 104, s: 1.3, col: '#7A6A55' }, { kind: 'hero', x: 52, y: 104, pose: 'stand' }] },
+    31: [{ items: [{ kind: 'drawer', x: 146, y: 100 }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    32: [{ items: [{ kind: 'copy', x: 146, y: 104, col: '#7A6A55' }, { kind: 'hero', x: 52, y: 104, pose: 'look' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'run' }], pit: [104, 138] }],
+    33: [{ items: [{ kind: 'crumple', x: 154, y: 100, col: '#8A8270' }, { kind: 'hero', x: 52, y: 104, pose: 'guard' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'stand' }], speed: [116, 44] }],
+    34: [{ items: [{ kind: 'drawer', x: 146, y: 100 }, { kind: 'hero', x: 52, y: 104, pose: 'swing' }] },
+         { items: [{ kind: 'hero', x: 58, y: 104, pose: 'up' }], star: [110, 72] }],
+    35: [{ items: [{ kind: 'copy', x: 140, y: 104, s: 1.3, col: '#7A6A55' }, { kind: 'hero', x: 52, y: 104, pose: 'stand' }] },
          { items: [{ kind: 'copy', x: 136, y: 104, s: 1.3, col: '#7A6A55' }, { kind: 'hero', x: 56, y: 104, pose: 'swing' }], star: [102, 74] }],
-    16: [{ dark: 1, spot: 1, id: 'l16', items: [{ kind: 'hero', x: 52, y: 104, pose: 'run', col: '#B9B2A1' }, { kind: 'nib', x: 164, y: 116, col: C.purple }] },
+    36: [{ dark: 1, spot: 1, id: 'l16', items: [{ kind: 'hero', x: 52, y: 104, pose: 'run', col: '#B9B2A1' }, { kind: 'nib', x: 164, y: 116, col: C.purple }] },
          { dark: 1, id: 'l16b', items: [{ kind: 'hero', x: 58, y: 104, pose: 'up', col: '#B9B2A1' }], pit: [104, 140] }],
-    17: [{ dark: 1, margin: 1, id: 'l17', items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard', col: '#B9B2A1' }] },
+    37: [{ dark: 1, margin: 1, id: 'l17', items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard', col: '#B9B2A1' }] },
          { photo: 1, id: 'l17b', lamp: false, hand: true, handScale: 1.30, handX: 236, handY: -78 }],
-    18: [{ dark: 1, spot: 1, id: 'l18', items: [{ kind: 'architect', x: 150, y: 104 }, { kind: 'hero', x: 48, y: 104, pose: 'stand', col: '#B9B2A1' }] },
-         { dark: 1, spot: 1, id: 'l18b', items: [{ kind: 'architect', x: 146, y: 104 }, { kind: 'hero', x: 52, y: 104, pose: 'swing', col: C.ink }], star: [100, 72] }],
+    38: [{ dark: 1, id: 'g38', items: [{ kind: 'nib', x: 162, y: 116, col: C.purple }, { kind: 'hero', x: 52, y: 104, pose: 'swing', col: '#B9B2A1' }] },
+         { dark: 1, id: 'g38', items: [{ kind: 'hero', x: 58, y: 104, pose: 'up', col: '#B9B2A1' }], star: [110, 72] }],
+    39: [{ dark: 1, id: 'g39', items: [{ kind: 'copy', x: 148, y: 104, col: '#5A4A6B' }, { kind: 'hero', x: 52, y: 104, pose: 'look', col: '#B9B2A1' }] },
+         { dark: 1, id: 'g39', items: [{ kind: 'hero', x: 58, y: 104, pose: 'run', col: '#B9B2A1' }], pit: [104, 138] }],
+    40: [{ dark: 1, id: 'g40', items: [{ kind: 'nib', x: 162, y: 116, col: C.purple }, { kind: 'hero', x: 52, y: 104, pose: 'guard', col: '#B9B2A1' }] },
+         { dark: 1, id: 'g40', items: [{ kind: 'hero', x: 58, y: 104, pose: 'stand', col: '#B9B2A1' }], speed: [116, 44] }],
+    41: [{ dark: 1, id: 'g41', items: [{ kind: 'copy', x: 148, y: 104, col: '#5A4A6B' }, { kind: 'hero', x: 52, y: 104, pose: 'swing', col: '#B9B2A1' }] },
+         { dark: 1, id: 'g41', items: [{ kind: 'hero', x: 58, y: 104, pose: 'up', col: '#B9B2A1' }], star: [110, 72] }],
+    42: [{ dark: 1, spot: 1, id: 'l42', items: [{ kind: 'architect', x: 150, y: 104 }, { kind: 'hero', x: 48, y: 104, pose: 'stand', col: '#B9B2A1' }] },
+         { dark: 1, spot: 1, id: 'l42b', items: [{ kind: 'architect', x: 146, y: 104 }, { kind: 'hero', x: 52, y: 104, pose: 'swing', col: C.ink }], star: [100, 72] }],
   },
 };
 
@@ -4462,7 +4791,7 @@ function ShopScreen({ save, onSave, onBack }) {
    RECORDS
    ============================================================ */
 function BoardScreen({ save, board, onBack, onRefresh, busy }) {
-  const [sel, setSel] = useState(save.level <= 18 ? save.level : 18);
+  const [sel, setSel] = useState(Math.min(save.level, LEVELS.length));
   const rows = (board['L' + sel] || []).slice(0, 15);
   const lv = LEVELS.find(l => l.id === sel);
   const totals = useMemo(() => {
@@ -4534,7 +4863,7 @@ function BoardScreen({ save, board, onBack, onRefresh, busy }) {
             <div key={r.n} style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '6px 8px', borderRadius: 3, background: r.n === save.name ? 'rgba(242,201,76,0.28)' : 'transparent' }}>
               <span style={{ fontFamily: FONT_DATA, fontSize: 13, width: 30, color: '#8A8270', fontWeight: 700 }}>{`#${i + 1}`}</span>
               <span style={{ flex: 1, fontFamily: FONT_DISP, fontWeight: 800, fontSize: 16, color: C.graphite }}>{r.n}</span>
-              <span style={{ fontFamily: FONT_DATA, fontSize: 13, color: '#8A8270' }}>{`${r.c}/18`}</span>
+              <span style={{ fontFamily: FONT_DATA, fontSize: 13, color: '#8A8270' }}>{`${r.c}/${LEVELS.length}`}</span>
               <span style={{ fontFamily: FONT_DATA, fontSize: 14, fontWeight: 700, color: C.graphite }}>{fmt(r.t)}</span>
             </div>
           ))}
@@ -4736,7 +5065,7 @@ function SettingsScreen({ save, onSave, onBack, onWipe, storageOk }) {
           <div style={{ marginTop: 12, display: 'flex', gap: 10, flexWrap: 'wrap', alignItems: 'center' }}>
             {!confirm ? <Btn tone="danger" onClick={() => setConfirm(true)}>Start over</Btn> : (
               <>
-                <Hand size={15} col={C.red}>{'This wipes your shards, gear and all 18 times. Records already posted stay up.'}</Hand>
+                <Hand size={15} col={C.red}>{'This wipes your shards, gear and every time you have posted. Records already posted stay up.'}</Hand>
                 <Btn tone="danger" onClick={onWipe}>Yes, wipe it</Btn>
                 <Btn tone="quiet" onClick={() => setConfirm(false)}>Keep my run</Btn>
               </>
@@ -4759,6 +5088,7 @@ export default function InkboundApp() {
   const [busy, setBusy] = useState(false);
   const [sel, setSel] = useState(null);
   const [result, setResult] = useState(null);
+  const [walk, setWalk] = useState(null);
   const [chEnd, setChEnd] = useState(null);
 
   useEffect(() => {
@@ -4796,8 +5126,8 @@ export default function InkboundApp() {
     s.cleared[lv.id] = true;
     if (isPB) s.best[lv.id] = res.ms;
     s.runs = (s.runs || 0) + 1;
-    if (lv.id === s.level && s.level < 18) s.level = lv.id + 1;
-    else if (lv.id === 18) s.level = 19;
+    if (lv.id === s.level && s.level < LEVELS.length) s.level = lv.id + 1;
+    else if (lv.id === LEVELS.length) s.level = LEVELS.length + 1;
     persist(s);
 
     let rank = null;
@@ -4812,7 +5142,12 @@ export default function InkboundApp() {
   const afterResult = () => {
     const lv = result.lv;
     if (lv.kind === 'boss' && CH_END[lv.ch]) { setChEnd(lv.ch); setScreen('chend'); }
-    else setScreen('map');
+    else {
+      /* walk to the next stop on the way back to the map */
+      const next = LEVELS.find(l => l.id === lv.id + 1);
+      setWalk(result.won && next && next.ch === lv.ch ? { from: lv.id, to: next.id } : null);
+      setScreen('map');
+    }
   };
 
   const refreshBoard = async () => { setBusy(true); const b = await loadBoard(); setBoard(b || {}); setBusy(false); };
@@ -4856,6 +5191,7 @@ export default function InkboundApp() {
 
   if (screen === 'map') {
     return shell(<MapScreen save={save} board={board} onPick={(lv) => { setSel(lv); setScreen('brief'); }}
+      walk={walk} onWalkDone={() => setWalk(null)}
       onShop={() => setScreen('shop')} onBoard={() => setScreen('board')} onSettings={() => setScreen('settings')} />);
   }
 
