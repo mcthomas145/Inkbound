@@ -392,7 +392,7 @@ const freshSave = (name) => ({
 
 /* Bump VERSION on every deploy so testers can tell you which build they are on.
    It is shown at the bottom of Settings. */
-const VERSION = '3.0.0';
+const VERSION = '3.1.0';
 
 /* Old saves are merged onto a fresh one, so adding a new upgrade, wearable or
    save field in a later build never leaves an existing player with undefined
@@ -4008,290 +4008,244 @@ function CFig({ kind, x, y, s = 1, col = C.graphite, flip = false, pose = 'stand
   return null;
 }
 
+/* deterministic wobble, so the drawing does not reshuffle every render */
+const pk = (a, b) => { const v = Math.sin(a * 12.9898 + b * 78.233) * 43758.5453; return v - Math.floor(v); };
+
+/* A block of parallel strokes at an angle, clipped to a shape.
+   `d` is how tight the strokes are; smaller means darker. */
+function Hatch({ id, x, y, w, h, ang = -38, d = 5, op = 0.5, wob = 1.2, weight = 0.9, seed = 0, lit = null }) {
+  const rad = (ang * Math.PI) / 180;
+  const dx = Math.cos(rad), dy = Math.sin(rad);
+  const span = Math.abs(w * dy) + Math.abs(h * dx);
+  const L = Math.hypot(w, h);
+  const strokes = [];
+  const n = Math.ceil(span / d);
+  for (let i = 0; i <= n; i++) {
+    const off = -span / 2 + i * d;
+    const cx = x + w / 2 - dy * off, cy = y + h / 2 + dx * off;
+    /* Each line is broken into short marks with gaps between them, so the
+       fill reads as strokes laid down by hand. Where the lamp reaches, the
+       marks are simply left out \u2014 light is paper, not white paint. */
+    let t = -L * 0.5;
+    let g = 0;
+    while (t < L * 0.5 && g < 16) {
+      g++;
+      const len = 12 + pk(seed + i, g) * 26;
+      const gap = 2 + pk(seed + i, g + 50) * 7;
+      const t2 = Math.min(L * 0.5, t + len);
+      const mx = cx + dx * (t + t2) / 2, my = cy + dy * (t + t2) / 2;
+      let keep = true;
+      if (lit) {
+        const q = Math.hypot((mx - lit.x) / lit.rx, (my - lit.y) / lit.ry);
+        const shade = clamp((q - 0.28) / 0.72, 0, 1);      // 0 in the middle of the pool
+        if (pk(seed + i, g + 300) > shade * shade) keep = false;
+      }
+      if (keep) {
+        const j = (pk(seed + i, g + 90) - 0.5) * wob * 2.4;
+        const wt = weight * (0.45 + pk(seed + i, g + 20) * 0.75);
+        strokes.push(
+          <line key={i + '-' + g}
+            x1={cx + dx * t + j} y1={cy + dy * t + j}
+            x2={cx + dx * t2 - j * 0.5} y2={cy + dy * t2 - j * 0.5}
+            strokeWidth={wt} strokeLinecap="round" />
+        );
+      }
+      t = t2 + gap;
+    }
+  }
+  return <g clipPath={`url(#${id})`} stroke="#1E1C1A" opacity={op}>{strokes}</g>;
+}
+
+/* A pencil contour: a line drawn twice, slightly off, the way a hand does it. */
+function Edge({ d, w = 1.4, op = 0.85, seed = 0 }) {
+  return (
+    <g stroke="#232120" fill="none" strokeLinecap="round" opacity={op}>
+      <path d={d} strokeWidth={w} />
+      <path d={d} strokeWidth={w * 0.6} opacity="0.5"
+        transform={`translate(${(pk(seed, 3) - 0.5) * 1.6} ${(pk(seed, 7) - 0.5) * 1.6})`} />
+    </g>
+  );
+}
+
 function CDesk({ spec }) {
   const K = spec.id || 'd';
   const u = (n) => `${K}-${n}`;
-  const url = (n) => `url(#${u(n)})`;
-  const lamp = spec.lamp !== false;
-  const hand = spec.hand !== false;
-  const hs = spec.handScale || 1;      // how close the hand looms
-  const hx = spec.handX == null ? 268 : spec.handX;
-  const hy = spec.handY == null ? -6 : spec.handY;
+  const lampOn = spec.lamp !== false;
+  const close = !!spec.close;
+  const vb = close ? '70 96 260 150' : '0 0 400 240';
+
+  /* wall panel grid, as in the room: big plates with seams between them */
+  const cols = [0, 96, 190, 284, 400];
+  const rows = [0, 84, 168, 240];
 
   return (
-    <svg viewBox="0 0 400 240" preserveAspectRatio="xMidYMax slice"
-      style={{ display: 'block', width: '100%', height: '100%', background: '#141019' }}>
+    <svg viewBox={vb} preserveAspectRatio="xMidYMid slice"
+      style={{ display: 'block', width: '100%', height: '100%', background: '#EFEBE0' }}>
       <defs>
-        {/* --- the room behind, almost black, warming toward the lamp --- */}
-        <linearGradient id={u('wall')} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#0E0B12" />
-          <stop offset="70%" stopColor="#1C1620" />
-          <stop offset="100%" stopColor="#2A2028" />
-        </linearGradient>
-        {/* --- the tabletop: warm oak, darker as it recedes --- */}
-        <linearGradient id={u('wood')} x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stopColor="#3B2716" />
-          <stop offset="26%" stopColor="#6B4626" />
-          <stop offset="62%" stopColor="#8A5C31" />
-          <stop offset="100%" stopColor="#4A2F19" />
-        </linearGradient>
-        {/* --- pool of lamplight on the wood --- */}
-        <radialGradient id={u('pool2')} cx="38%" cy="42%" r="62%">
-          <stop offset="0%" stopColor="#FFD9A0" stopOpacity="0.58" />
-          <stop offset="55%" stopColor="#C98B3C" stopOpacity="0.16" />
-          <stop offset="100%" stopColor="#000000" stopOpacity="0" />
+        {/* the lit part of the wall — everything outside this gets hatched down */}
+        <radialGradient id={u('glow')} cx="60%" cy="44%" r="40%">
+          <stop offset="0%" stopColor="#000" stopOpacity="1" />
+          <stop offset="46%" stopColor="#000" stopOpacity="0.80" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0" />
         </radialGradient>
-        {/* --- the cone of light itself --- */}
-        <linearGradient id={u('cone')} x1="0" y1="0" x2="0.35" y2="1">
-          <stop offset="0%" stopColor="#FFE2AE" stopOpacity="0.50" />
-          <stop offset="100%" stopColor="#FFCF86" stopOpacity="0.02" />
-        </linearGradient>
-        {/* --- lamp shade, brushed metal --- */}
-        <linearGradient id={u('shade')} x1="0" y1="0" x2="1" y2="0.4">
-          <stop offset="0%" stopColor="#151318" />
-          <stop offset="34%" stopColor="#5A5460" />
-          <stop offset="52%" stopColor="#A39CA8" />
-          <stop offset="70%" stopColor="#443E4A" />
-          <stop offset="100%" stopColor="#100E13" />
-        </linearGradient>
-        <linearGradient id={u('arm')} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#221E26" />
-          <stop offset="40%" stopColor="#726B78" />
-          <stop offset="62%" stopColor="#332E39" />
-          <stop offset="100%" stopColor="#15121A" />
-        </linearGradient>
-        <radialGradient id={u('bulb')} cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFF6DF" stopOpacity="1" />
-          <stop offset="38%" stopColor="#FFD98F" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#FFB347" stopOpacity="0" />
+        {/* the wall gets shaded everywhere except where the lamp reaches */}
+        <mask id={u('dark')}>
+          <rect x="0" y="0" width="400" height="240" fill="#fff" />
+          <ellipse cx="252" cy="104" rx="132" ry="86" fill={`url(#${u('glow')})`} />
+        </mask>
+        {/* and the desktop is brightest of all, under the shade */}
+        <radialGradient id={u('glow2')} cx="52%" cy="30%" r="60%">
+          <stop offset="0%" stopColor="#000" stopOpacity="1" />
+          <stop offset="100%" stopColor="#000" stopOpacity="0" />
         </radialGradient>
-        {/* --- skin --- */}
-        <linearGradient id={u('skin')} x1="0.05" y1="0.9" x2="0.85" y2="0.1">
-          <stop offset="0%" stopColor="#8A5F40" />
-          <stop offset="26%" stopColor="#5E3E29" />
-          <stop offset="62%" stopColor="#3A2618" />
-          <stop offset="100%" stopColor="#241710" />
-        </linearGradient>
-        <linearGradient id={u('skin2')} x1="0" y1="1" x2="0.7" y2="0">
-          <stop offset="0%" stopColor="#B07C53" />
-          <stop offset="45%" stopColor="#7A5236" />
-          <stop offset="100%" stopColor="#33210F" />
-        </linearGradient>
-        <linearGradient id={u('cuff')} x1="0" y1="0" x2="1" y2="0.6">
-          <stop offset="0%" stopColor="#2B3440" />
-          <stop offset="45%" stopColor="#4C5A6B" />
-          <stop offset="100%" stopColor="#1A2028" />
-        </linearGradient>
-        {/* --- the pen: lacquer barrel and a steel nib --- */}
-        <linearGradient id={u('pen')} x1="0" y1="0" x2="1" y2="0">
-          <stop offset="0%" stopColor="#0B0A0D" />
-          <stop offset="30%" stopColor="#3A3540" />
-          <stop offset="46%" stopColor="#8E8794" />
-          <stop offset="62%" stopColor="#241F29" />
-          <stop offset="100%" stopColor="#0A090C" />
-        </linearGradient>
-        <linearGradient id={u('nib')} x1="0" y1="0" x2="1" y2="0.3">
-          <stop offset="0%" stopColor="#6E6A62" />
-          <stop offset="40%" stopColor="#D8D2C4" />
-          <stop offset="58%" stopColor="#F5F0E2" />
-          <stop offset="100%" stopColor="#4A463E" />
-        </linearGradient>
-        {/* --- paper --- */}
-        <linearGradient id={u('page2')} x1="0.1" y1="0" x2="0.9" y2="1">
-          <stop offset="0%" stopColor="#FCF5E0" />
-          <stop offset="52%" stopColor="#E7DBBA" />
-          <stop offset="100%" stopColor="#A8946E" />
-        </linearGradient>
-        {/* --- vignette --- */}
-        <radialGradient id={u('vig')} cx="42%" cy="52%" r="78%">
-          <stop offset="0%" stopColor="#000" stopOpacity="0" />
-          <stop offset="62%" stopColor="#000" stopOpacity="0.18" />
-          <stop offset="100%" stopColor="#000" stopOpacity="0.86" />
-        </radialGradient>
-        {/* --- soft shadow / depth of field --- */}
-        <filter id={u('soft')} x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="5" />
-        </filter>
-        <filter id={u('soft2')} x="-40%" y="-40%" width="180%" height="180%">
-          <feGaussianBlur stdDeviation="2.2" />
-        </filter>
-        <filter id={u('far')} x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="3.4" />
-        </filter>
-        <filter id={u('glow')} x="-80%" y="-80%" width="260%" height="260%">
-          <feGaussianBlur stdDeviation="7" />
-        </filter>
+        <mask id={u('deskLit')}>
+          <rect x="100" y="168" width="220" height="72" fill="#fff" />
+          <ellipse cx="216" cy="192" rx="96" ry="30" fill={`url(#${u('glow2')})`} />
+        </mask>
+        <clipPath id={u('wall')}><rect x="0" y="0" width="400" height="196" /></clipPath>
+        <clipPath id={u('floor')}><rect x="0" y="196" width="400" height="44" /></clipPath>
+        <clipPath id={u('top')}><path d="M118 196 L296 196 L302 206 L112 206 Z" /></clipPath>
+        <clipPath id={u('front')}><rect x="112" y="206" width="190" height="26" /></clipPath>
+        <clipPath id={u('shade')}><path d="M330 30 Q352 20 374 30 L386 60 Q358 74 336 60 Z" /></clipPath>
+        <clipPath id={u('under')}><rect x="112" y="230" width="190" height="12" /></clipPath>
       </defs>
 
-      {/* ---------- room ---------- */}
-      <rect x="0" y="0" width="400" height="240" fill={url('wall')} />
-      <g filter={url('far')} opacity="0.5">
-        <rect x="0" y="96" width="400" height="10" fill="#0A070C" />
-        <rect x="286" y="34" width="74" height="66" fill="#221A26" />
-      </g>
-
-      {/* ---------- tabletop ---------- */}
-      <path d="M-10 106 L 410 106 L 410 250 L -10 250 Z" fill={url('wood')} />
-      {/* grain */}
-      <g opacity="0.30">
-        {[112, 122, 134, 148, 164, 182, 202, 224].map((y, i) => (
-          <path key={y} d={`M-10 ${y} q 120 ${i % 2 ? -3.5 : 3.5} 210 0 q 110 ${i % 2 ? 3 : -3} 210 0`}
-            stroke={i % 3 === 0 ? '#3A2412' : '#2E1C0E'} strokeWidth={i % 3 === 0 ? 1.5 : 0.9} fill="none" />
-        ))}
-        {[[62, 130, 9, 4], [250, 168, 12, 5], [340, 200, 8, 3]].map(([cx, cy, rx, ry], i) => (
-          <ellipse key={'k' + i} cx={cx} cy={cy} rx={rx} ry={ry} stroke="#2A1A0C" strokeWidth="1.1" fill="none" />
+      {/* ---------- paper ---------- */}
+      <rect x="-20" y="-20" width="440" height="280" fill="#EFEBE0" />
+      {/* tooth of the paper */}
+      <g stroke="#B9B2A1" opacity="0.18">
+        {[...Array(90)].map((_, i) => (
+          <line key={i} x1={pk(i, 1) * 400} y1={pk(i, 2) * 240}
+            x2={pk(i, 1) * 400 + 2} y2={pk(i, 2) * 240 + 1.4} strokeWidth="0.5" />
         ))}
       </g>
-      {/* front lip of the table catching a highlight */}
-      <path d="M-10 107 L 410 107 L 410 110 L -10 110 Z" fill="#C08A4E" opacity="0.35" />
 
-      {/* ---------- the light on the wood ---------- */}
-      <ellipse cx="150" cy="176" rx="185" ry="78" fill={url('pool2')} />
-
-      {/* ---------- the page being worked on ---------- */}
-      <g transform="translate(126 168) rotate(-4)">
-        <ellipse cx="6" cy="26" rx="86" ry="15" fill="#150D06" opacity="0.55" filter={url('soft')} />
-        <rect x="-78" y="-40" width="164" height="66" rx="1.5" fill={url('page2')} />
-        <g opacity="0.30">
-          {[-26, -12, 2, 16].map(y => <line key={y} x1="-68" y1={y} x2="76" y2={y} stroke="#8A7A55" strokeWidth="0.8" />)}
-          <line x1="-52" y1="-40" x2="-52" y2="26" stroke="#B4674F" strokeWidth="1" />
+      {/* ---------- the wall, hatched down into the dark ---------- */}
+      {(() => {
+        const lit = lampOn ? { x: 288, y: 108, rx: 132, ry: 92 } : null;
+        return (<>
+          <Hatch id={u('wall')} x={0} y={0} w={400} h={196} ang={-42} d={2.6} op={0.55} weight={1.1} seed={1} lit={lit} />
+          <Hatch id={u('wall')} x={0} y={0} w={400} h={196} ang={36} d={3.2} op={0.45} weight={1.0} seed={2} lit={lit} />
+          <Hatch id={u('wall')} x={0} y={0} w={400} h={196} ang={-76} d={4.4} op={0.34} seed={3} lit={lit} />
+          <Hatch id={u('wall')} x={0} y={0} w={400} h={196} ang={8} d={5.5} op={0.26} seed={7} lit={lit} />
+          {/* the far corners go almost black */}
+          <Hatch id={u('wall')} x={0} y={0} w={96} h={196} ang={-42} d={2.1} op={0.55} weight={1.2} seed={4} />
+          <Hatch id={u('wall')} x={0} y={0} w={62} h={196} ang={46} d={2.3} op={0.5} weight={1.1} seed={5} />
+          <Hatch id={u('wall')} x={0} y={0} w={400} h={30} ang={-42} d={2.4} op={0.48} weight={1.1} seed={6} lit={lit && { ...lit, ry: 44 }} />
+          <Hatch id={u('wall')} x={0} y={168} w={400} h={28} ang={-42} d={2.8} op={0.4} seed={8} lit={lit && { ...lit, y: 150 }} />
+        </>);
+      })()}
+      {/* panel seams */}
+      {cols.slice(1, -1).map((cx, i) => (
+        <Edge key={'c' + i} d={`M${cx} 0 L${cx + (pk(i, 9) - 0.5) * 3} 196`} w={1.5} op={0.5} seed={10 + i} />
+      ))}
+      {rows.slice(1, -1).map((ry, i) => (
+        <Edge key={'r' + i} d={`M0 ${ry} L400 ${ry + (pk(i, 11) - 0.5) * 3}`} w={1.5} op={0.5} seed={20 + i} />
+      ))}
+      {/* a few stains and bolt marks, as in the room */}
+      {[[58, 132], [176, 118], [212, 92], [330, 150], [86, 62]].map(([sx, sy], i) => (
+        <g key={i} opacity="0.4">
+          <circle cx={sx} cy={sy} r={2 + pk(i, 13) * 2} fill="#2A2724" opacity="0.5" />
+          <path d={`M${sx} ${sy} q ${2 + pk(i, 15) * 3} ${5 + pk(i, 17) * 8} ${-1} ${11 + pk(i, 19) * 9}`}
+            stroke="#2A2724" strokeWidth="1.4" fill="none" opacity="0.45" />
         </g>
-        {/* a small figure, drawn and left there */}
-        <g stroke="#3A3128" strokeWidth="1.8" fill="none" strokeLinecap="round" opacity="0.85">
-          <circle cx="18" cy="-22" r="4.6" />
-          <path d="M18 -17 L 18 -5 M18 -13 L 11 -8 M18 -13 L 25 -8 M18 -5 L 12 4 M18 -5 L 24 4" />
-        </g>
-      </g>
+      ))}
 
-      {/* ---------- the lamp ---------- */}
-      {lamp && (
+      {/* ---------- the light thrown onto the wall ---------- */}
+      {lampOn && (
         <g>
-          {/* its shadow thrown back across the wood */}
-          <ellipse cx="42" cy="152" rx="46" ry="13" fill="#120A04" opacity="0.5" filter={url('soft')} />
-          {/* arm coming down from off-frame */}
-          <path d="M-6 -10 L 22 -10 L 58 62 L 40 70 Z" fill={url('arm')} />
-          <path d="M2 -10 L 10 -10 L 44 64 L 38 67 Z" fill="#9A93A0" opacity="0.28" />
-          {/* joint */}
-          <circle cx="49" cy="66" r="9" fill="#2A2530" />
-          <circle cx="47" cy="63" r="4.4" fill="#8B8492" opacity="0.7" />
-          {/* shade: a truncated cone seen from the side */}
-          <path d="M40 58 L 92 78 L 78 118 L 26 94 Z" fill={url('shade')} />
-          <path d="M40 58 L 92 78 L 86 90 L 37 71 Z" fill="#CFC7D4" opacity="0.32" />
-          <ellipse cx="52" cy="106" rx="27" ry="11" fill="#0D0B10" transform="rotate(20 52 106)" />
-          <ellipse cx="52" cy="105" rx="24" ry="9" fill="#3A2A18" transform="rotate(20 52 105)" />
-          <path d="M26 94 L 78 118" stroke="#0C0A10" strokeWidth="2.4" />
-          {/* the light source */}
-          <ellipse cx="52" cy="104" rx="19" ry="8" fill={url('bulb')} transform="rotate(20 52 104)" filter={url('soft2')} />
-          <ellipse cx="52" cy="104" rx="66" ry="40" fill={url('bulb')} opacity="0.40" filter={url('glow')} />
-          {/* the cone */}
-          <path d="M28 100 L 74 116 L 300 240 L -60 240 Z" fill={url('cone')} filter={url('soft')} opacity="0.85" />
+          {/* the edges of the beam, faint, the way you would indicate them */}
+          <Edge d="M344 70 L150 200" w={0.9} op={0.3} seed={30} />
+          <Edge d="M378 66 L300 200" w={0.9} op={0.24} seed={31} />
         </g>
       )}
 
-      {/* ---------- the hand, looming in from above ----------
-           It sits between you and the only light in the room, so it reads
-           as a dark mass with a warm edge. The silhouette is composited
-           from overlapping shapes in one fill; each curled finger is then
-           sculpted with a lit crescent up-left and a shaded one down-right,
-           which is what makes the digits separate. */}
-      {hand && (() => {
-        const FING = [
-          { x: 116, y: 140, rx: 36, ry: 26, r: -28 },
-          { x: 80,  y: 166, rx: 36, ry: 26, r: -24 },
-          { x: 44,  y: 178, rx: 33, ry: 24, r: -18 },
-          { x: 10,  y: 180, rx: 28, ry: 21, r: -12 },
-        ];
-        const THUMB = { x: -6, y: 126, rx: 40, ry: 27, r: 38 };
-        const lobe = (f, i) => (
-          <g key={'l' + i} transform={`rotate(${f.r} ${f.x} ${f.y})`}>
-            {/* shaded side, away from the lamp */}
-            <ellipse cx={f.x + 8} cy={f.y + 7} rx={f.rx * 0.88} ry={f.ry * 0.86}
-              fill="#1C1109" opacity="0.55" filter={url('soft2')} />
-            {/* lit crescent, toward it */}
-            <ellipse cx={f.x - 7} cy={f.y - 6} rx={f.rx * 0.80} ry={f.ry * 0.78}
-              fill="#96693F" opacity="0.42" filter={url('soft2')} />
-            <ellipse cx={f.x - 10} cy={f.y - 9} rx={f.rx * 0.52} ry={f.ry * 0.50}
-              fill="#C08A55" opacity="0.34" filter={url('soft2')} />
-            {/* the bright edge itself */}
-            <path d={`M${f.x - f.rx * 0.95} ${f.y + f.ry * 0.20}
-                      q ${f.rx * 0.25} ${-f.ry * 1.15} ${f.rx * 1.20} ${-f.ry * 0.92}`}
-              stroke="#FFD49A" strokeWidth="3.2" fill="none" opacity={0.62 - i * 0.09} strokeLinecap="round" />
-            {/* crease where the next finger folds behind it */}
-            <path d={`M${f.x + f.rx * 0.72} ${f.y - f.ry * 0.62}
-                      q ${-f.rx * 0.16} ${f.ry * 0.95} ${-f.rx * 0.90} ${f.ry * 1.02}`}
-              stroke="#150C06" strokeWidth="4.4" fill="none" opacity="0.5" filter={url('soft2')} />
-          </g>
-        );
+      {/* ---------- floor ---------- */}
+      <Hatch id={u('floor')} x={0} y={196} w={400} h={44} ang={-8} d={2.4} op={0.55} weight={1.1} seed={40}
+        lit={lampOn ? { x: 250, y: 206, rx: 90, ry: 26 } : null} />
+      <Hatch id={u('floor')} x={0} y={196} w={400} h={44} ang={-54} d={2.8} op={0.45} seed={41}
+        lit={lampOn ? { x: 250, y: 206, rx: 78, ry: 22 } : null} />
+      <Hatch id={u('floor')} x={0} y={196} w={130} h={44} ang={-8} d={2} op={0.5} seed={42} />
+      <Hatch id={u('floor')} x={300} y={196} w={100} h={44} ang={-8} d={2} op={0.5} seed={43} />
 
-        return (
-          <g transform={`translate(${hx} ${hy}) scale(${hs}) rotate(4)`}>
-            {/* thrown down and to the right, away from the lamp */}
-            <g opacity="0.40" filter={url('soft')}>
-              <ellipse cx="52" cy="212" rx="86" ry="24" fill="#0C0602" />
-              <ellipse cx="4" cy="198" rx="40" ry="15" fill="#0C0602" opacity="0.6" />
-            </g>
+      {/* ---------- the table ---------- */}
+      {/* legs first, behind the top */}
+      <Edge d="M132 206 L124 240" w={2} seed={50} />
+      <Edge d="M284 206 L292 240" w={2} seed={51} />
+      <Hatch id={u('under')} x={112} y={230} w={190} h={12} ang={-20} d={2.6} op={0.5} seed={52} />
+      {/* top surface, catching the light */}
+      <Edge d="M118 196 L296 196 L302 206 L112 206 Z" w={1.8} seed={53} />
+      <Hatch id={u('top')} x={112} y={196} w={190} h={10} ang={-14} d={3.4} op={0.34} seed={54}
+        lit={lampOn ? { x: 232, y: 200, rx: 118, ry: 26 } : null} />
+      {/* front rail and the two open drawers */}
+      <Edge d="M112 206 L302 206 L300 232 L114 232 Z" w={1.6} seed={55} />
+      <Hatch id={u('front')} x={112} y={206} w={190} h={26} ang={-30} d={3} op={0.42} seed={56} />
+      {[[124, 196], [212, 196]].map(([dx], i) => (
+        <g key={i}>
+          <Edge d={`M${dx} 210 L${dx + 78} 210 L${dx + 78} 228 L${dx} 228 Z`} w={1.5} seed={60 + i} />
+          {/* the dark inside of the drawer */}
+          <Hatch id={u('front')} x={dx} y={212} w={78} h={15} ang={-46} d={2.4} op={0.62} seed={62 + i} />
+          {/* things lying in it */}
+          {[...Array(5)].map((_, j) => (
+            <line key={j} x1={dx + 8 + j * 14} y1={218 + pk(i * 5 + j, 21) * 4}
+              x2={dx + 18 + j * 14} y2={218 + pk(i * 5 + j, 23) * 4}
+              stroke="#EFEBE0" strokeWidth="1.6" opacity="0.75" />
+          ))}
+          <circle cx={dx + 39} cy={219} r="2.6" fill="none" stroke="#232120" strokeWidth="1.3" opacity="0.7" />
+        </g>
+      ))}
 
-            {/* one flat silhouette, so nothing reads as a separate object */}
-            <g fill="#2A1A10">
-              <path d="M6 -70 L118 -70 L128 44 L14 54 Z" />
-              <ellipse cx="62" cy="92" rx="72" ry="56" />
-              {FING.map((f, i) => (
-                <ellipse key={'s' + i} cx={f.x} cy={f.y} rx={f.rx} ry={f.ry} transform={`rotate(${f.r} ${f.x} ${f.y})`} />
-              ))}
-              <ellipse cx={THUMB.x} cy={THUMB.y} rx={THUMB.rx} ry={THUMB.ry} transform={`rotate(${THUMB.r} ${THUMB.x} ${THUMB.y})`} />
-            </g>
+      {/* ---------- what is on the table ---------- */}
+      {/* paper sorter at the left */}
+      <Edge d="M136 174 L176 172 L178 196 L136 196 Z" w={1.5} seed={70} />
+      <Edge d="M136 174 L176 172" w={1.2} op={0.6} seed={71} />
+      <Edge d="M148 176 L168 175" w={1} op={0.5} seed={72} />
+      {/* a sheet of paper, the brightest thing in the room */}
+      <Edge d="M182 186 L232 184 L236 196 L180 196 Z" w={1.3} seed={73} />
+      <g stroke="#4A463E" opacity="0.35">
+        {[188, 191].map(yy => <line key={yy} x1="188" y1={yy} x2="228" y2={yy - 0.6} strokeWidth="0.7" />)}
+      </g>
+      {/* a small frame, and a scatter of odds and ends */}
+      <Edge d="M244 176 L266 175 L267 194 L244 195 Z" w={1.4} seed={74} />
+      <Hatch id={u('top')} x={244} y={176} w={23} h={19} ang={-52} d={2.4} op={0.55} seed={75} />
+      <Edge d="M272 184 L292 183 L293 195 L272 196 Z" w={1.3} seed={76} />
+      {[[206, 179], [214, 177], [222, 180]].map(([bx, by], i) => (
+        <circle key={i} cx={bx} cy={by} r="2.2" fill="none" stroke="#232120" strokeWidth="1.1" opacity="0.6" />
+      ))}
+      {/* what the objects cast, away from the lamp */}
+      <g opacity="0.42">
+        <Hatch id={u('top')} x={120} y={192} w={70} h={8} ang={-10} d={2.2} op={0.7} seed={77} />
+      </g>
 
-            {/* sleeve over the wrist */}
-            <path d="M6 -70 L118 -70 L128 40 L14 50 Z" fill={url('cuff')} />
-            <path d="M16 -70 L34 -70 L46 44 L26 47 Z" fill="#8296AC" opacity="0.16" />
-            <path d="M14 32 L127 20 L129 46 L17 58 Z" fill="#161C23" />
-            <path d="M14 35 L127 23" stroke="#7C8EA4" strokeWidth="2.2" opacity="0.30" fill="none" />
+      {/* ---------- the lamp, reaching in from the right ---------- */}
+      <g>
+        {/* post and the jointed arm */}
+        <Edge d="M392 240 L390 96" w={2.6} seed={80} />
+        <Edge d="M390 100 L352 40" w={2.4} seed={81} />
+        <Edge d="M352 40 L332 46" w={2.2} seed={82} />
+        {/* springs along the arm */}
+        <g stroke="#232120" strokeWidth="0.9" fill="none" opacity="0.55">
+          {[...Array(9)].map((_, i) => {
+            const t = i / 8, ax = 390 - t * 38, ay = 100 - t * 60;
+            return <path key={i} d={`M${ax - 3} ${ay} l 6 -3`} />;
+          })}
+        </g>
+        <circle cx="352" cy="40" r="4" fill="none" stroke="#232120" strokeWidth="1.6" />
+        <circle cx="390" cy="99" r="4.4" fill="none" stroke="#232120" strokeWidth="1.6" />
+        {/* the shade: a cone seen from the side, dark against the lit wall */}
+        <Edge d="M330 30 Q352 20 374 30 L386 60 Q358 74 336 60 Z" w={2.1} seed={83} />
+        <Hatch id={u('shade')} x={328} y={20} w={60} h={56} ang={-58} d={1.9} op={0.72} weight={1.2} seed={84} />
+        <Hatch id={u('shade')} x={328} y={20} w={60} h={56} ang={30} d={2.6} op={0.5} seed={85} />
+        <Edge d="M336 60 Q358 74 386 60" w={2.3} seed={86} />
+        {/* the mouth of it, where the paper is left alone */}
+        {lampOn && (<>
+          <ellipse cx="361" cy="64" rx="24" ry="7" fill="#EFEBE0" stroke="#232120" strokeWidth="1.3" />
+          <ellipse cx="361" cy="64" rx="14" ry="3.6" fill="#EFEBE0" stroke="#6E6A62" strokeWidth="0.8" />
+        </>)}
+      </g>
 
-            {/* the back of the hand: dark, with the knuckle ridge catching light */}
-            <ellipse cx="62" cy="92" rx="72" ry="56" fill={url('skin')} />
-            <ellipse cx="86" cy="76" rx="54" ry="40" fill="#180F08" opacity="0.45" filter={url('soft')} />
-            <path d="M-2 104 q 30 -26 64 -25 q 36 1 62 20"
-              stroke="#B07A48" strokeWidth="13" fill="none" opacity="0.28" filter={url('soft2')} />
-            <g opacity="0.14" stroke="#8A5C38" fill="none" strokeWidth="3" strokeLinecap="round">
-              <path d="M28 52 q 12 24 10 42" /><path d="M52 46 q 10 26 12 44" />
-              <path d="M76 46 q 8 24 14 42" /><path d="M98 54 q 6 20 12 34" />
-            </g>
-
-            {FING.map(lobe)}
-
-            {/* thumb, closest to the light and to you */}
-            <g transform={`rotate(${THUMB.r} ${THUMB.x} ${THUMB.y})`}>
-              <ellipse cx={THUMB.x + 8} cy={THUMB.y + 7} rx="35" ry="24" fill="#1C1109" opacity="0.5" filter={url('soft2')} />
-              <ellipse cx={THUMB.x - 8} cy={THUMB.y - 7} rx="32" ry="22" fill="#A0723F" opacity="0.45" filter={url('soft2')} />
-              <ellipse cx={THUMB.x - 12} cy={THUMB.y - 10} rx="20" ry="14" fill="#CE9457" opacity="0.36" filter={url('soft2')} />
-              <path d={`M${THUMB.x - 38} ${THUMB.y + 6} q 10 -31 46 -25`}
-                stroke="#FFDCA6" strokeWidth="3.6" fill="none" opacity="0.66" strokeLinecap="round" />
-            </g>
-            {/* the web between thumb and hand */}
-            <path d="M-26 106 q 20 12 26 34" stroke="#120A05" strokeWidth="13" fill="none" opacity="0.45" filter={url('soft2')} />
-
-            {/* rim along the outer edge of the whole hand */}
-            <path d="M-8 66 q 4 -26 20 -36" stroke="#FFD096" strokeWidth="3.4" fill="none" opacity="0.5" strokeLinecap="round" />
-            <path d="M130 62 q 8 34 -4 62" stroke="#7A5230" strokeWidth="3" fill="none" opacity="0.35" strokeLinecap="round" />
-
-            {/* the pen */}
-            <g transform="translate(14 74) rotate(28)">
-              <rect x="-11" y="-190" width="22" height="234" rx="6" fill={url('pen')} />
-              <rect x="-4.5" y="-190" width="4.5" height="234" fill="#CFC8D6" opacity="0.34" />
-              <rect x="-12" y="4" width="24" height="10" rx="2.5" fill="#948DA0" opacity="0.75" />
-              <rect x="-12" y="-104" width="24" height="7" rx="2" fill="#6E6878" opacity="0.6" />
-              <path d="M-11 44 L 11 44 L 3 96 L 0.5 110 L -2 96 Z" fill={url('nib')} />
-              <path d="M0.5 58 L 0.5 102" stroke="#2C2A26" strokeWidth="1.7" />
-              <path d="M-6 50 L 6 50" stroke="#33312C" strokeWidth="1.5" />
-              <circle cx="0.5" cy="109" r="3.6" fill="#151119" opacity="0.92" />
-            </g>
-          </g>
-        );
-      })()}
-
-      {/* ---------- grade ---------- */}
-      <rect x="0" y="0" width="400" height="240" fill={url('vig')} />
-      <rect x="0" y="0" width="400" height="240" fill="#2A1A08" opacity="0.10" />
+      {/* ---------- grade: darken the far edges a little more ---------- */}
+      <Hatch id={u('wall')} x={330} y={0} w={70} h={196} ang={-40} d={3.6} op={0.30} seed={90} />
     </svg>
   );
 }
@@ -4356,7 +4310,7 @@ const SC = {
   pro: [
     { rules: 1, margin: 1, items: [{ kind: 'hero', x: 66, y: 104, pose: 'fallen' }] },
     { rules: 1, margin: 1, items: [{ kind: 'hero', x: 70, y: 104, pose: 'look' }], speed: [110, 40] },
-    { photo: 1, id: 'p3', lamp: true, hand: true, handScale: 0.95, handX: 262, handY: -14 },
+    { photo: 1, id: 'p3', lamp: true },
     { dark: 1, spot: 1, id: 'p4', items: [{ kind: 'hero', x: 44, y: 104, pose: 'swing', col: '#B9B2A1' }, { kind: 'architect', x: 156, y: 104 }] },
   ],
   ch: {
@@ -4371,7 +4325,7 @@ const SC = {
     5: [{ items: [{ kind: 'copy', x: 138, y: 104, col: '#7A6A55', pose: 'fallen' }, { kind: 'hero', x: 58, y: 104, pose: 'stand' }] },
         { items: [{ kind: 'crumple', x: 150, y: 100, col: '#8A8270' }, { kind: 'hero', x: 56, y: 104, pose: 'look' }] }],
     6: [{ dark: 1, spot: 1, id: 'c61', items: [{ kind: 'nib', x: 150, y: 118, col: C.purple }, { kind: 'hero', x: 52, y: 104, pose: 'stand', col: '#B9B2A1' }] },
-        { photo: 1, id: 'c62', lamp: true, hand: true, handScale: 0.80, handX: 288, handY: -52 },
+        { photo: 1, id: 'c62', lamp: true },
         { dark: 1, id: 'c63', items: [{ kind: 'hero', x: 150, y: 104, pose: 'run', col: C.ink }], speed: [20, 60] }],
   },
   lv: {
@@ -4448,7 +4402,7 @@ const SC = {
     36: [{ dark: 1, spot: 1, id: 'l16', items: [{ kind: 'hero', x: 52, y: 104, pose: 'run', col: '#B9B2A1' }, { kind: 'nib', x: 164, y: 116, col: C.purple }] },
          { dark: 1, id: 'l16b', items: [{ kind: 'hero', x: 58, y: 104, pose: 'up', col: '#B9B2A1' }], pit: [104, 140] }],
     37: [{ dark: 1, margin: 1, id: 'l17', items: [{ kind: 'hero', x: 54, y: 104, pose: 'guard', col: '#B9B2A1' }] },
-         { photo: 1, id: 'l17b', lamp: false, hand: true, handScale: 1.30, handX: 236, handY: -78 }],
+         { photo: 1, id: 'l41b', lamp: true, close: 1 }],
     38: [{ dark: 1, id: 'g38', items: [{ kind: 'nib', x: 162, y: 116, col: C.purple }, { kind: 'hero', x: 52, y: 104, pose: 'swing', col: '#B9B2A1' }] },
          { dark: 1, id: 'g38', items: [{ kind: 'hero', x: 58, y: 104, pose: 'up', col: '#B9B2A1' }], star: [110, 72] }],
     39: [{ dark: 1, id: 'g39', items: [{ kind: 'copy', x: 148, y: 104, col: '#5A4A6B' }, { kind: 'hero', x: 52, y: 104, pose: 'look', col: '#B9B2A1' }] },
