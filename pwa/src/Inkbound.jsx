@@ -392,7 +392,7 @@ const freshSave = (name) => ({
 
 /* Bump VERSION on every deploy so testers can tell you which build they are on.
    It is shown at the bottom of Settings. */
-const VERSION = '3.1.0';
+const VERSION = '3.2.0';
 
 /* Old saves are merged onto a fresh one, so adding a new upgrade, wearable or
    save field in a later build never leaves an existing player with undefined
@@ -3634,7 +3634,7 @@ function TrailWalker({ x, y, face = 1, phase = 0, look }) {
   );
 }
 
-function TrailStop({ p, save, onPick }) {
+function TrailStop({ p, save, onPick, refEl }) {
   const lv = p.lv;
   const cleared = !!save.cleared[lv.id];
   const unlocked = lv.id <= save.level;
@@ -3647,7 +3647,7 @@ function TrailStop({ p, save, onPick }) {
   const fill = !unlocked ? '#D8D2C2' : medal ? MEDAL[medal] : cleared ? C.paper2 : C.paper;
 
   return (
-    <g transform={`translate(${p.x} ${p.y})`}
+    <g ref={refEl} transform={`translate(${p.x} ${p.y})`}
       onClick={unlocked ? () => onPick(lv) : undefined}
       style={{ cursor: unlocked ? 'pointer' : 'not-allowed' }}>
       <ellipse cx="0" cy={R * 0.72} rx={R * 0.86} ry={R * 0.26} fill="rgba(34,32,28,0.18)" />
@@ -3679,6 +3679,42 @@ function MapScreen({ save, board, onPick, onShop, onBoard, onSettings, walk, onW
   const reached = save.level;
   const look = useMemo(() => lookOf(save), [save.skin, save.head, save.back, save.weapon]);
 
+  /* The map follows you. Wherever you have got to is what is on screen,
+     so the trail never has to be hunted through by hand. */
+  const chRefs = useRef({});
+  const stopRefs = useRef({});
+  const svgRefs = useRef({});
+  const cur = LEVELS.find(l => l.id === save.level) || LEVELS[LEVELS.length - 1];
+
+  /* Put a page position in the middle of the window. */
+  const centreOn = (pageY, smooth) => {
+    if (typeof window === 'undefined') return;
+    const top = Math.max(0, pageY - window.innerHeight * 0.5);
+    window.scrollTo({ top, left: 0, behavior: smooth ? 'smooth' : 'auto' });
+  };
+  const centreStop = (id, smooth) => {
+    const el = stopRefs.current[id];
+    if (!el || !el.getBoundingClientRect) return false;
+    const r = el.getBoundingClientRect();
+    if (!r.height && !r.width) return false;
+    centreOn(window.scrollY + r.top + r.height / 2, smooth);
+    return true;
+  };
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (walk) return;                 // the walk does its own following
+    /* one frame's delay so the svg has been laid out and measured */
+    const t = setTimeout(() => {
+      if (!centreStop(cur.id, false)) {
+        const el = chRefs.current[cur.ch];
+        if (el && el.scrollIntoView) el.scrollIntoView({ block: 'start', behavior: 'auto' });
+        else window.scrollTo({ top: 0, behavior: 'auto' });
+      }
+    }, 0);
+    return () => clearTimeout(t);
+  }, [cur.id, !!walk]);
+
   /* After a win the figure walks the gap from the level you just finished
      to the next stop, wearing whatever you have on. */
   const [walker, setWalker] = useState(null);
@@ -3696,15 +3732,27 @@ function MapScreen({ save, board, onPick, onShop, onBoard, onSettings, walk, onW
       if (!t0) t0 = ts;
       const u = clamp((ts - t0) / DUR, 0, 1);
       const e = u < 0.5 ? 2 * u * u : 1 - Math.pow(-2 * u + 2, 2) / 2;   // ease in and out
+      const wy = a2.y + (b2.y - a2.y) * e - Math.sin(e * 3.14159) * 6;
       setWalker({
         ch: from.ch,
         x: a2.x + (b2.x - a2.x) * e,
-        y: a2.y + (b2.y - a2.y) * e - Math.sin(e * 3.14159) * 6,
+        y: wy,
         face: b2.x >= a2.x ? 1 : -1,
         phase: (ts - t0) / 90,
       });
+      /* the page scrolls along with him */
+      const svg = svgRefs.current[from.ch];
+      if (svg && svg.getBoundingClientRect) {
+        const r = svg.getBoundingClientRect();
+        const H2 = pts[pts.length - 1].y + 76;
+        if (r.height) centreOn(window.scrollY + r.top + (wy / H2) * r.height, false);
+      }
       if (u < 1) raf = requestAnimationFrame(tick);
-      else { setWalker(null); if (onWalkDone) onWalkDone(); }
+      else {
+        setWalker(null);
+        centreStop(to.id, true);      // settle gently on where he stopped
+        if (onWalkDone) onWalkDone();
+      }
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
@@ -3762,7 +3810,8 @@ function MapScreen({ save, board, onPick, onShop, onBoard, onSettings, walk, onW
         const pts = trailPoints(lvs);
         const H = pts[pts.length - 1].y + 76;
         return (
-          <div key={ch.id} className="ib-rise" style={{ marginBottom: 10, opacity: open ? 1 : 0.55 }}>
+          <div key={ch.id} ref={el => { chRefs.current[ch.id] = el; }}
+            className="ib-rise" style={{ marginBottom: 10, opacity: open ? 1 : 0.55, scrollMarginTop: 10 }}>
             <div style={{
               display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap',
               background: open ? ch.color : '#C8C1B0', border: `3px solid ${C.graphite}`,
@@ -3779,7 +3828,8 @@ function MapScreen({ save, board, onPick, onShop, onBoard, onSettings, walk, onW
             </div>
 
             <div style={{ overflow: 'hidden', border: `3px solid ${C.graphite}`, background: '#E9F0DC' }}>
-              <svg viewBox={`0 0 ${TRAIL_W} ${H}`} style={{ display: 'block', width: '100%', height: 'auto' }}>
+              <svg ref={el => { svgRefs.current[ch.id] = el; }} viewBox={`0 0 ${TRAIL_W} ${H}`}
+                style={{ display: 'block', width: '100%', height: 'auto' }}>
                 <defs>
                   <linearGradient id={`grass${ch.id}`} x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#DCE9C8" />
@@ -3793,7 +3843,8 @@ function MapScreen({ save, board, onPick, onShop, onBoard, onSettings, walk, onW
                 <path d={trailPath(pts)} fill="none" stroke={ch.color} strokeWidth="26" strokeLinecap="round" opacity="0.16" />
                 <path d={trailPath(pts)} fill="none" stroke={C.graphite} strokeWidth="3" strokeLinecap="round"
                   strokeDasharray="2 13" opacity="0.45" />
-                {pts.map(p => <TrailStop key={p.lv.id} p={p} save={save} onPick={onPick} />)}
+                {pts.map(p => <TrailStop key={p.lv.id} p={p} save={save} onPick={onPick}
+                  refEl={el => { stopRefs.current[p.lv.id] = el; }} />)}
                 {walker && walker.ch === ch.id && (
                   <TrailWalker x={walker.x} y={walker.y} face={walker.face} phase={walker.phase} look={look} />
                 )}
@@ -5112,6 +5163,14 @@ export default function InkboundApp() {
     color: C.graphite,
     paddingTop: 18,
   };
+
+  /* Every screen opens at the top. Without this the browser keeps whatever
+     scroll position the last screen had, so arriving at the map from the
+     opening screen dropped you halfway down the trail. */
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+  }, [screen]);
 
   const shell = (inner) => (<div style={bg}><style>{STYLE}</style>{inner}</div>);
 
